@@ -9,6 +9,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<User> Users { get; set; }
     public DbSet<Buyer> Buyers { get; set; }
     public DbSet<Supplier> Suppliers { get; set; }
+    public DbSet<BusinessType> BusinessTypes { get; set; }
     public DbSet<Region> Regions { get; set; }
     public DbSet<Product> Products { get; set; }
     public DbSet<Category> Categories { get; set; }
@@ -27,7 +28,7 @@ public class ApplicationDbContext : DbContext
     {
         if (!optionsBuilder.IsConfigured)
         {
-            optionsBuilder.UseSqlServer("Data Source=mohamed\\sqlexpress;Initial Catalog=TawreedDB;Integrated Security=True;Encrypt=True;Trust Server Certificate=True");
+            optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=TawreedDB;Integrated Security=True;Encrypt=True;Trust Server Certificate=True");
         }
         base.OnConfiguring(optionsBuilder);
     }
@@ -49,8 +50,6 @@ public class ApplicationDbContext : DbContext
             .WithOne(u => u.Supplier)
             .HasForeignKey<Supplier>(s => s.UserId);
 
-        modelBuilder.Entity<User>().HasMany(u => u.Categories)
-            .WithMany();
 
         var CascadeFKs = modelBuilder.Model.GetEntityTypes()
                 .SelectMany(t => t.GetForeignKeys())

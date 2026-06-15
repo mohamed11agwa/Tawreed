@@ -17,11 +17,11 @@ namespace Tawreed.DAL.Repository.RegionRepo
                 .ToListAsync();
 
         public async Task<bool> ExistsAsync(Guid id)
-            => await _dbSet.AnyAsync(r => r.ID == id);
+            => await _dbSet.AnyAsync(r => r.Id == id);
 
         public async Task<bool> IsNameTakenAsync(string name, Guid? excludeId = null)
             => await _dbSet.AnyAsync(r =>
                 r.Name.ToLower() == name.ToLower() &&
-                (excludeId == null || r.ID != excludeId));
+                (excludeId == null || r.Id != excludeId));
     }
 }
