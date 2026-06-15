@@ -1,9 +1,11 @@
-﻿namespace Tawreed.DAL.Models;
+﻿using Tawreed.DAL.Enums;
+
+namespace Tawreed.DAL.Models;
 
 public class GroupOrderParticipant
 {
     public Guid Id { get; set; }
-    public string Status { get; set; } = string.Empty;
+    public GroupOrderStatus Status { get; set; } =GroupOrderStatus.Open ;
     public DateTime JoinedAt { get; set; }
 
 

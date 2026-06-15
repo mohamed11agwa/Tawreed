@@ -28,8 +28,7 @@ public class Supplier
     public User User { get; set; } = default!;
     public Guid RegionId { get; set; }
     public Region Region { get; set; } = default!;
-    public ICollection<SupplierProduct> SupplierProducts { get; set; } = new HashSet<SupplierProduct>();
-    public ICollection<Category> Categories { get; set; } = new HashSet<Category>();
+    public ICollection<SupplierProduct> ?SupplierProducts { get; set; } = new HashSet<SupplierProduct>();
 
 
 }

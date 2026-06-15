@@ -38,6 +38,7 @@ public class User
     [Required]
     [MaxLength(2)]
     public string PreferredLang { get; set; } = "ar";
+    public ICollection<Category >? Categories { get; set; } = new HashSet<Category>();
 
     public DateTime? LastLoginAt { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
@@ -49,6 +50,6 @@ public class User
 
     public Buyer? Buyer { get; set; } = default!;
     public Supplier? Supplier { get; set; } = default!;
-    public ICollection<Notification> Notifications { get; set; } = new HashSet<Notification>();
+    public ICollection<Notification>? Notifications { get; set; } = new HashSet<Notification>();
 
 }

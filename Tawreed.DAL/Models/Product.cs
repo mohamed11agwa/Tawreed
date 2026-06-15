@@ -13,8 +13,9 @@ public class Product
     [Required]
     [MaxLength(20)]
     public UnitOfMeasure Unit { get; set; }
-
+    
+    
     public Guid CategoryId { get; set; }
     public Category Category { get; set; } = default!;
-    public ICollection<SupplierProduct> SupplierProducts { get; set; } = new HashSet<SupplierProduct>();
+    public ICollection<SupplierProduct>? SupplierProducts { get; set; } = new HashSet<SupplierProduct>();
 }

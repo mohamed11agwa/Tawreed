@@ -1,0 +1,25 @@
+﻿using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Text;
+using Tawreed.DAL.Data;
+using Tawreed.DAL.Enums;
+using Tawreed.DAL.Models;
+using Tawreed.DAL.Repository.MainRepo;
+
+namespace Tawreed.DAL.Repository.CategoryRepo
+{
+    public class CategoryRepo(ApplicationDbContext context) : MainRepo<Category>(context), ICategoryRepo
+    {
+        public async Task<bool> ExistsAsync(Guid id)
+            => await _dbSet.AnyAsync(c => c.Id == id);
+
+        public async Task<Category?> GetByNameAsync(CategoryName name)
+            => await _dbSet.FirstOrDefaultAsync(c => c.Name == name);
+
+        public async Task<bool> IsNameTakenAsync(CategoryName name, Guid? excludeId = null)
+            => await _dbSet.AnyAsync(c =>
+                c.Name == name &&
+                (excludeId == null || c.Id != excludeId));
+    }
+}

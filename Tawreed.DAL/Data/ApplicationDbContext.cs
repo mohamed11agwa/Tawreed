@@ -49,6 +49,9 @@ public class ApplicationDbContext : DbContext
             .WithOne(u => u.Supplier)
             .HasForeignKey<Supplier>(s => s.UserId);
 
+        modelBuilder.Entity<User>().HasMany(u => u.Categories)
+            .WithMany();
+
         var CascadeFKs = modelBuilder.Model.GetEntityTypes()
                 .SelectMany(t => t.GetForeignKeys())
                 .Where(fk => !fk.IsOwnership && fk.DeleteBehavior == DeleteBehavior.Cascade);

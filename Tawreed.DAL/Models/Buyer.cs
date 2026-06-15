@@ -35,8 +35,7 @@ public class Buyer
     public Guid RegionId { get; set; }
     public Region Region { get; set; } = default!;
 
-    public ICollection<Category> Categories { get; set; } = new HashSet<Category>();
 
     public ICollection<GroupOrder> CreatedOrders { get; set; } = new HashSet<GroupOrder>();
-    public ICollection<GroupOrderParticipant> Participations { get; set; } = [];
+    public ICollection<GroupOrderParticipant> ?Participations { get; set; } = [];
 }
