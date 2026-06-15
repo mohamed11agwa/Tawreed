@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Tawreed.BLL.Dtos.Category;
+using Tawreed.BLL.Dtos.Reigon;
 
 namespace Tawreed.BLL.Services.CategoryService
 {

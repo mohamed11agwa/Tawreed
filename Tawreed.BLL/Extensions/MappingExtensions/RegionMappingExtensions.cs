@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Tawreed.BLL.Dtos.Category;
 using Tawreed.BLL.Dtos.Reigon;
 using Tawreed.DAL.Models;
 
@@ -35,6 +36,12 @@ namespace Tawreed.BLL.Extensions.MappingExtensions
         {
             region.Name = dto.Name.Trim();
             region.IsActive = dto.IsActive;
+            region.UpdatedAt = DateTime.UtcNow;
+        }
+        public static void ApplyPatch(this PatchRegionDto dto, Region region)
+        {
+            if (dto.Name is not null) region.Name = dto.Name.Trim();
+            if (dto.IsActive is not null) region.IsActive = dto.IsActive.Value;
             region.UpdatedAt = DateTime.UtcNow;
         }
     }

@@ -11,11 +11,13 @@ namespace Tawreed.API.Controllers
     public class ProductsController(
        IProductService service,
        IValidator<CreateProductDto> createValidator,
-       IValidator<UpdateProductDto> updateValidator) : ControllerBase
+       IValidator<UpdateProductDto> updateValidator,
+       IValidator<PatchProductDto> patchValidator) : ControllerBase
     {
         private readonly IProductService _service = service;
         private readonly IValidator<CreateProductDto> _createValidator = createValidator;
         private readonly IValidator<UpdateProductDto> _updateValidator = updateValidator;
+        private readonly IValidator<PatchProductDto> _patchValidator = patchValidator;
 
         // GET api/products
         [HttpGet]
@@ -86,5 +88,24 @@ namespace Tawreed.API.Controllers
             var deleted = await _service.DeleteAsync(id);
             return deleted ? NoContent() : NotFound();
         }
+        // PATCH api/products/{id}
+        [HttpPatch("{id:guid}")]
+        public async Task<IActionResult> Patch(Guid id, [FromBody] PatchProductDto dto)
+        {
+            var validation = await _patchValidator.ValidateAsync(dto);
+            if (!validation.IsValid)
+                return BadRequest(validation.Errors.Select(e => e.ErrorMessage));
+
+            try
+            {
+                var patched = await _service.PatchAsync(id, dto);
+                return patched is null ? NotFound() : Ok(patched);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
     }
 }

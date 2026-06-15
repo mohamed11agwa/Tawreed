@@ -22,5 +22,5 @@ namespace Tawreed.BLL.Dtos.Category
     {
         public CategoryName Name { get; set; }
     }
-
+  
 }

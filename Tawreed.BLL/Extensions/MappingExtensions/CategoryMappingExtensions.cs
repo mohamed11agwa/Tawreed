@@ -30,5 +30,6 @@ namespace Tawreed.BLL.Extensions.MappingExtensions
         {
             category.Name = dto.Name;
         }
+      
     }
 }
