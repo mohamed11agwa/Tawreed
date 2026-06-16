@@ -10,7 +10,7 @@ namespace Tawreed.DAL.Repository.MainRepo
         Task<T?> GetByIdAsync(Guid id);
         Task AddAsync(T entity);
         Task UpdateAsync(T entity);
-        Task DeleteAsync(T entity);
+        Task<int> DeleteAsync(T entity);
         Task SaveChangesAsync();
     }
 }
