@@ -32,12 +32,14 @@ namespace Tawreed.API
             // Add FluentValidation validators for region DTOs
             builder.Services.AddValidatorsFromAssemblyContaining<CreateRegionValidator>();
             builder.Services.AddValidatorsFromAssemblyContaining<UpdateRegionValidator>();
+            builder.Services.AddValidatorsFromAssemblyContaining<PatchRegionValidator>();
             //Add FluentValidation validators for category DTOs
             builder.Services.AddValidatorsFromAssemblyContaining<CreateCategoryValidator>();
             builder.Services.AddValidatorsFromAssemblyContaining<UpdateCategoryValidator>();
             //Add FluentValidation validators for product DTOs
             builder.Services.AddValidatorsFromAssemblyContaining<CreateProductValidator>();
             builder.Services.AddValidatorsFromAssemblyContaining<UpdateProductValidator>();
+            builder.Services.AddValidatorsFromAssemblyContaining<PatchProductValidator>();
             /*------------------------------------------------*/
             // Add other services, repositories, and configurations as needed
             //Region
