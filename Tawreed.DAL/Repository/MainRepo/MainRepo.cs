@@ -26,16 +26,16 @@ namespace Tawreed.DAL.Repository.MainRepo
         public async Task AddAsync(T entity)
             => await _dbSet.AddAsync(entity);
 
-        public Task UpdateAsync(T entity)
+        public async Task UpdateAsync(T entity)
         {
             _dbSet.Update(entity);
-            return Task.CompletedTask;
+            await _context.SaveChangesAsync();
         }
 
-        public Task DeleteAsync(T entity)
+        public async Task<int> DeleteAsync(T entity)
         {
             _dbSet.Remove(entity);
-            return Task.CompletedTask;
+            return await _context.SaveChangesAsync();
         }
 
         public async Task SaveChangesAsync()

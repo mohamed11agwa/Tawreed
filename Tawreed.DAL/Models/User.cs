@@ -5,7 +5,7 @@ namespace Tawreed.DAL.Models;
 
 public class User
 {
-    public Guid ID { get; set; }
+    public Guid Id { get; set; }
 
 
     [Required]
@@ -38,7 +38,7 @@ public class User
     [Required]
     [MaxLength(2)]
     public string PreferredLang { get; set; } = "ar";
-    public ICollection<Category >? Categories { get; set; } = new HashSet<Category>();
+    public ICollection<BusinessType> BusinessTypes { get; set; } = new HashSet<BusinessType>();
 
     public DateTime? LastLoginAt { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;

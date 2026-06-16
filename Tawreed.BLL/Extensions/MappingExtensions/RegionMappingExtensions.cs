@@ -11,7 +11,7 @@ namespace Tawreed.BLL.Extensions.MappingExtensions
         // Model → Response DTO
         public static RegionResponseDto ToDto(this Region region) => new()
         {
-            Id = region.ID,
+            Id = region.Id,
             Name = region.Name,
             IsActive = region.IsActive,
 
@@ -23,7 +23,7 @@ namespace Tawreed.BLL.Extensions.MappingExtensions
         // Create DTO → Model
         public static Region ToModel(this CreateRegionDto dto) => new()
         {
-            ID = Guid.NewGuid(),
+            Id = Guid.NewGuid(),
             Name = dto.Name.Trim(),
             IsActive = dto.IsActive,
             CreatedAt = DateTime.UtcNow,

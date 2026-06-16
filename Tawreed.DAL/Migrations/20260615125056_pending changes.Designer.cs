@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Tawreed.DAL.Data;
 
@@ -11,9 +12,11 @@ using Tawreed.DAL.Data;
 namespace Tawreed.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260615125056_pending changes")]
+    partial class pendingchanges
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,34 +25,19 @@ namespace Tawreed.DAL.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("BusinessTypeUser", b =>
+            modelBuilder.Entity("CategoryUser", b =>
                 {
-                    b.Property<Guid>("BusinessTypesId")
+                    b.Property<Guid>("CategoriesId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("UsersId")
+                    b.Property<Guid>("UserID")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("BusinessTypesId", "UsersId");
+                    b.HasKey("CategoriesId", "UserID");
 
-                    b.HasIndex("UsersId");
+                    b.HasIndex("UserID");
 
-                    b.ToTable("BusinessTypeUser");
-                });
-
-            modelBuilder.Entity("Tawreed.DAL.Models.BusinessType", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("BusinessTypes");
+                    b.ToTable("CategoryUser");
                 });
 
             modelBuilder.Entity("Tawreed.DAL.Models.Buyer", b =>
@@ -232,7 +220,7 @@ namespace Tawreed.DAL.Migrations
 
             modelBuilder.Entity("Tawreed.DAL.Models.Region", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
@@ -250,7 +238,7 @@ namespace Tawreed.DAL.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("Id");
+                    b.HasKey("ID");
 
                     b.ToTable("Regions");
                 });
@@ -318,7 +306,7 @@ namespace Tawreed.DAL.Migrations
 
             modelBuilder.Entity("Tawreed.DAL.Models.User", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
@@ -361,22 +349,22 @@ namespace Tawreed.DAL.Migrations
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("Id");
+                    b.HasKey("ID");
 
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("BusinessTypeUser", b =>
+            modelBuilder.Entity("CategoryUser", b =>
                 {
-                    b.HasOne("Tawreed.DAL.Models.BusinessType", null)
+                    b.HasOne("Tawreed.DAL.Models.Category", null)
                         .WithMany()
-                        .HasForeignKey("BusinessTypesId")
+                        .HasForeignKey("CategoriesId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Tawreed.DAL.Models.User", null)
                         .WithMany()
-                        .HasForeignKey("UsersId")
+                        .HasForeignKey("UserID")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
