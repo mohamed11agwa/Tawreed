@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tawreed.BLL.Dtos.Product;
 using Tawreed.BLL.Services.ProductService;
@@ -8,6 +8,7 @@ namespace Tawreed.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class ProductsController(
        IProductService service,
        IValidator<CreateProductDto> createValidator,
@@ -19,6 +20,7 @@ namespace Tawreed.API.Controllers
 
         // GET api/products
         [HttpGet]
+        
         public async Task<IActionResult> GetAll()
         {
             var products = await _service.GetAllAsync();

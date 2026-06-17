@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Tawreed.DAL.Data;
 
@@ -11,9 +12,11 @@ using Tawreed.DAL.Data;
 namespace Tawreed.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260616140846_AddIdentityTables")]
+    partial class AddIdentityTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -241,21 +244,6 @@ namespace Tawreed.DAL.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("Tawreed.DAL.Models.BusinessType", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("BusinessTypes");
-                });
-
             modelBuilder.Entity("Tawreed.DAL.Models.Buyer", b =>
                 {
                     b.Property<Guid>("UserId")
@@ -436,7 +424,7 @@ namespace Tawreed.DAL.Migrations
 
             modelBuilder.Entity("Tawreed.DAL.Models.Region", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
@@ -454,7 +442,7 @@ namespace Tawreed.DAL.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("Id");
+                    b.HasKey("ID");
 
                     b.ToTable("Regions");
                 });
@@ -479,11 +467,16 @@ namespace Tawreed.DAL.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<Guid>("RegionId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("TaxNumber")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
                     b.HasKey("UserId");
+
+                    b.HasIndex("RegionId");
 
                     b.ToTable("Suppliers");
                 });
@@ -667,6 +660,8 @@ namespace Tawreed.DAL.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.Navigation("Region");
+
                     b.Navigation("User");
                 });
 
@@ -725,6 +720,8 @@ namespace Tawreed.DAL.Migrations
                     b.Navigation("Buyers");
 
                     b.Navigation("GroupOrders");
+
+                    b.Navigation("Suppliers");
                 });
 
             modelBuilder.Entity("Tawreed.DAL.Models.Supplier", b =>

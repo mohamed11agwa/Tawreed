@@ -30,12 +30,10 @@ public class Buyer
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
 
-
-    public User User { get; set; } = default!;
     public Guid RegionId { get; set; }
     public Region Region { get; set; } = default!;
-
-
+    public ApplicationUser User { get; set; } = default!;
     public ICollection<GroupOrder> CreatedOrders { get; set; } = new HashSet<GroupOrder>();
     public ICollection<GroupOrderParticipant> ?Participations { get; set; } = [];
+    
 }
