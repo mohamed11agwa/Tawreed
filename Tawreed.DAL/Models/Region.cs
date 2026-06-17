@@ -8,7 +8,7 @@ namespace Tawreed.DAL.Models
 {
     public class Region
     {
-        public Guid ID { get; set; }
+        public Guid Id { get; set; }
 
         [Required]
         [MaxLength(100)]

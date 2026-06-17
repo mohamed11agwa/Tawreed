@@ -2,10 +2,12 @@
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Tawreed.API.Validators;
+using Tawreed.BLL.Services.BuyerService;
 using Tawreed.BLL.Services.CategoryService;
 using Tawreed.BLL.Services.ProductService;
 using Tawreed.BLL.Services.RegionService;
 using Tawreed.DAL.Data;
+using Tawreed.DAL.Repository.BuyerRepo;
 using Tawreed.DAL.Repository.CategoryRepo;
 using Tawreed.DAL.Repository.ProductRepo;
 using Tawreed.DAL.Repository.RegionRepo;
@@ -51,6 +53,10 @@ namespace Tawreed.API
             //Product
             builder.Services.AddScoped<IProductRepo, ProductRepo>();
             builder.Services.AddScoped<IProductService, ProductService>();
+
+            builder.Services.AddScoped<IBuyerRepo, BuyerRepo>();
+            builder.Services.AddScoped<IBuyerService, BuyerService>();
+
             var app = builder.Build();
    
 
