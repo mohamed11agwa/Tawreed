@@ -25,5 +25,7 @@ public class ApplicationUser : IdentityUser<Guid>
     // Navigation
     public Buyer? Buyer { get; set; }
     public Supplier? Supplier { get; set; }
+
+    public ICollection<BusinessType> BusinessTypes { get; set; }= new HashSet<BusinessType>();
     public ICollection<Notification> Notifications { get; set; } = new HashSet<Notification>();
 }

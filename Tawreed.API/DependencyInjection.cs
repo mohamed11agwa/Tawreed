@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -35,9 +34,10 @@ namespace Tawreed.API
             services.AddAuthConfig(configuration);
 
 
-            services.AddFluentValidationConfig();
+            //services.AddFluentValidationConfig();
 
-            services.AddScoped<IAuthService, AuthService>();
+           services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IJwtProvider, JwtProvider>();
             services.AddScoped<IRegionRepo, RegionRepo>();
             services.AddScoped<IRegionService, RegionService>();
             services.AddScoped<ICategoryRepo, CategoryRepo>();
@@ -51,12 +51,12 @@ namespace Tawreed.API
 
 
 
-        private static IServiceCollection AddFluentValidationConfig(this IServiceCollection services)
-        {
-            services.AddFluentValidationAutoValidation()
-                .AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-            return services;
-        }
+        //private static IServiceCollection AddFluentValidationConfig(this IServiceCollection services)
+        //{
+        //    services.AddFluentValidationAutoValidation()
+        //        .AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+        //    return services;
+        //}
 
 
         private static IServiceCollection AddAuthConfig(this IServiceCollection services, IConfiguration configuration)
@@ -64,7 +64,6 @@ namespace Tawreed.API
             services.AddIdentity<ApplicationUser, IdentityRole<Guid>>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            services.AddSingleton<IJwtProvider, JwtProvider>();
 
             services.AddOptions<JwtOptions>()
                 .Bind(configuration.GetSection(JwtOptions.SectionName))

@@ -14,10 +14,12 @@ public class JwtProvider(IOptions<JwtOptions> jwtOptions) : IJwtProvider
     public (string token, int expiresIn) GenerateToken(ApplicationUser user)
     {
         Claim[] claims = [
-                new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-                new Claim(JwtRegisteredClaimNames.Email, user.Email!),
-                new Claim(JwtRegisteredClaimNames.GivenName, user.FullName),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            new Claim(JwtRegisteredClaimNames.Sub,       user.Id.ToString()),
+            new Claim(JwtRegisteredClaimNames.Email,     user.Email!),
+            new Claim(JwtRegisteredClaimNames.GivenName, user.FullName),
+            new Claim(JwtRegisteredClaimNames.Jti,       Guid.NewGuid().ToString()),
+            // embed roles as claims so [Authorize(Roles = "...")] works
+            ..roles.Select(r => new Claim(ClaimTypes.Role, r))
         ];
         var symmertricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.Key));
         var signingCredentials = new SigningCredentials(symmertricSecurityKey, SecurityAlgorithms.HmacSha256);
@@ -36,5 +38,4 @@ public class JwtProvider(IOptions<JwtOptions> jwtOptions) : IJwtProvider
 
     }
 
-   
 }

@@ -13,5 +13,7 @@ namespace Tawreed.BLL.Services.RegionService
         Task<RegionResponseDto> CreateAsync(CreateRegionDto dto);
         Task<RegionResponseDto?> UpdateAsync(Guid id, UpdateRegionDto dto);
         Task<bool> DeleteAsync(Guid id);
+        Task<RegionResponseDto?> PatchAsync(Guid id, PatchRegionDto dto);
+
     }
 }

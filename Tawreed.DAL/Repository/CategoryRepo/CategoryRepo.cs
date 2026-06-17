@@ -14,10 +14,10 @@ namespace Tawreed.DAL.Repository.CategoryRepo
         public async Task<bool> ExistsAsync(Guid id)
             => await _dbSet.AnyAsync(c => c.Id == id);
 
-        public async Task<Category?> GetByNameAsync(CategoryName name)
+        public async Task<Category?> GetByNameAsync(string name)
             => await _dbSet.FirstOrDefaultAsync(c => c.Name == name);
 
-        public async Task<bool> IsNameTakenAsync(CategoryName name, Guid? excludeId = null)
+        public async Task<bool> IsNameTakenAsync(string name, Guid? excludeId = null)
             => await _dbSet.AnyAsync(c =>
                 c.Name == name &&
                 (excludeId == null || c.Id != excludeId));

@@ -57,5 +57,15 @@ namespace Tawreed.BLL.Services.RegionService
             await _repo.SaveChangesAsync();
             return true;
         }
+        public async Task<RegionResponseDto?> PatchAsync(Guid id, PatchRegionDto dto)
+        {
+            var region = await _repo.GetByIdAsync(id);
+            if (region is null) return null;
+
+            dto.ApplyPatch(region);
+            await _repo.UpdateAsync(region);
+            await _repo.SaveChangesAsync();
+            return region.ToDto();
+        }
     }
 }

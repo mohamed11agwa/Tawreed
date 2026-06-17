@@ -40,6 +40,14 @@ namespace Tawreed.BLL.Extensions.MappingExtensions
             product.Unit = dto.Unit ?? product.Unit;
             product.CategoryId = dto.CategoryId;
         }
+        // Patch DTO → existing Model (only non-null fields)
+        public static void ApplyPatch(this PatchProductDto dto, Product product)
+        {
+            if (dto.Name is not null) product.Name = dto.Name.Trim();
+            if (dto.Description is not null) product.Description = dto.Description.Trim();
+            if (dto.Unit is not null) product.Unit = dto.Unit.Value;
+            if (dto.CategoryId is not null) product.CategoryId = dto.CategoryId.Value;
+        }
     }
 
 }

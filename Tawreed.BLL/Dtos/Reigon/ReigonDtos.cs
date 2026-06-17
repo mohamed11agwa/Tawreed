@@ -24,5 +24,10 @@ namespace Tawreed.BLL.Dtos.Reigon
         public string Name { get; set; } = string.Empty;
         public bool IsActive { get; set; }
     }
+    public class PatchRegionDto
+    {
+        public string? Name { get; set; }
+        public bool? IsActive { get; set; }
+    }
 
 }
