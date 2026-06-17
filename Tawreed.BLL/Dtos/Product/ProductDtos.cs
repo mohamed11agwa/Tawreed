@@ -32,4 +32,11 @@ namespace Tawreed.BLL.Dtos.Product
         public UnitOfMeasure? Unit { get; set; }
         public Guid CategoryId { get; set; }
     }
+    public class PatchProductDto
+    {
+        public string? Name { get; set; }
+        public string? Description { get; set; }
+        public UnitOfMeasure? Unit { get; set; }
+        public Guid? CategoryId { get; set; }
+    }
 }

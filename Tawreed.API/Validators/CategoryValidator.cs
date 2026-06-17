@@ -9,7 +9,8 @@ namespace Tawreed.API.Validators
         public CreateCategoryValidator()
         {
             RuleFor(x => x.Name)
-                .IsInEnum().WithMessage($"Invalid category. Valid values: {string.Join(", ", Enum.GetNames<CategoryName>())}");
+                .NotEmpty().WithMessage("Category name is required.")
+                .MaximumLength(100).WithMessage("Category name must not exceed 100 characters.");
         }
     }
 
@@ -18,7 +19,8 @@ namespace Tawreed.API.Validators
         public UpdateCategoryValidator()
         {
             RuleFor(x => x.Name)
-                .IsInEnum().WithMessage($"Invalid category. Valid values: {string.Join(", ", Enum.GetNames<CategoryName>())}");
+                .NotEmpty().WithMessage("Category name is required.")
+                .MaximumLength(100).WithMessage("Category name must not exceed 100 characters.");
         }
     }
 }

@@ -22,5 +22,13 @@ namespace Tawreed.API.Validators
                 .MaximumLength(100).WithMessage("Region name must not exceed 100 characters.");
         }
     }
-
+    public class PatchRegionValidator : AbstractValidator<PatchRegionDto>
+    {
+        public PatchRegionValidator()
+        {
+            RuleFor(x => x.Name)
+                .MaximumLength(100).WithMessage("Region name must not exceed 100 characters.")
+                .When(x => x.Name is not null);
+        }
+    }
 }
