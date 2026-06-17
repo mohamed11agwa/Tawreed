@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Tawreed.BLL.Contracts.Authentication;
 using Tawreed.BLL.Services.AuthService;
 
@@ -6,9 +7,11 @@ namespace Tawreed.API.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class AuthController(IAuthService authService) : ControllerBase
+    public class AuthController(IAuthService authService, IOptions<JwtOptions> jwtOptions) : ControllerBase
     {
         private readonly IAuthService _authService = authService;
+        private readonly JwtOptions _jwtOptions = jwtOptions.Value;
+
 
         [HttpPost("")]
         public async Task<IActionResult> Login(LoginRequest request, CancellationToken cancellationToken)

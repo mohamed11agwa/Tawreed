@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
-using Tawreed.DAL.Enums;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Tawreed.DAL.Models
 {
@@ -13,6 +9,6 @@ namespace Tawreed.DAL.Models
         [Required]
         public string Name { get; set; }
 
-        public ICollection<User> Users { get; set; } = new HashSet<User>();
+        public ICollection<ApplicationUser> Users { get; set; } = new HashSet<ApplicationUser>();
     }
 }
