@@ -6,11 +6,13 @@ using Tawreed.BLL.Services.BuyerService;
 using Tawreed.BLL.Services.CategoryService;
 using Tawreed.BLL.Services.ProductService;
 using Tawreed.BLL.Services.RegionService;
+using Tawreed.BLL.Services.SupplierService;
 using Tawreed.DAL.Data;
 using Tawreed.DAL.Repository.BuyerRepo;
 using Tawreed.DAL.Repository.CategoryRepo;
 using Tawreed.DAL.Repository.ProductRepo;
 using Tawreed.DAL.Repository.RegionRepo;
+using Tawreed.DAL.Repository.Supplier_Repo;
 
 namespace Tawreed.API
 {
@@ -54,6 +56,9 @@ namespace Tawreed.API
 
             builder.Services.AddScoped<IBuyerRepo, BuyerRepo>();
             builder.Services.AddScoped<IBuyerService, BuyerService>();
+
+            builder.Services.AddScoped<ISupplierRepo, SupplierRepo>();
+            builder.Services.AddScoped<ISupplierService, SupplierService>();
 
             var app = builder.Build();
    
