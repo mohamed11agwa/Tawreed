@@ -13,6 +13,6 @@ namespace Tawreed.DAL.Models
         [Required]
         public string Name { get; set; }
 
-        public ICollection<User> Users { get; set; } = new HashSet<User>();
+        public ICollection<ApplicationUser> Users { get; set; } = new HashSet<ApplicationUser>();
     }
 }

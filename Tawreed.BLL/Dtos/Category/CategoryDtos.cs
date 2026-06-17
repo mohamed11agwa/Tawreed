@@ -15,12 +15,12 @@ namespace Tawreed.BLL.Dtos.Category
 
     public class CreateCategoryDto
     {
-        public CategoryName Name { get; set; }
+        public string Name { get; set; }
     }
 
     public class UpdateCategoryDto
     {
-        public CategoryName Name { get; set; }
+        public string Name { get; set; }
     }
   
 }

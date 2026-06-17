@@ -11,7 +11,7 @@ namespace Tawreed.DAL.Models
         public Guid Id { get; set; }
 
         [Required]
-        public CategoryName Name { get; set; }
+        public string Name { get; set; }
         public ICollection<Product> ?Products { get; set; } = new HashSet<Product>();
 
 

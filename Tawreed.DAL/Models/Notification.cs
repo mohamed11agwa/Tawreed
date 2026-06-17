@@ -25,7 +25,7 @@ namespace Tawreed.DAL.Models
 
 
         public Guid UserId { get; set; }
-        public User User { get; set; } = default!;
+        public ApplicationUser User { get; set; } = default!;
 
         public Guid GroupOrderId { get; set; }
         public GroupOrder? GroupOrder { get; set; }

@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Tawreed.DAL.Models;
 
@@ -9,7 +8,7 @@ public class Supplier
 
     [Required]
     [MaxLength(200)]
-    public string CompanyName { get; set; } = null!;
+    public string CompanyName { get; set; } = string.Empty;
 
 
     [MaxLength(50)]
@@ -25,10 +24,10 @@ public class Supplier
 
 
 
-    public User User { get; set; } = default!;
-    public Guid RegionId { get; set; }
-    public Region Region { get; set; } = default!;
-    public ICollection<SupplierProduct> ?SupplierProducts { get; set; } = new HashSet<SupplierProduct>();
+    public ApplicationUser User { get; set; } = default!;
+    public ICollection<Region> Regions { get; set; } = new HashSet<Region>();
+    public ICollection<SupplierProduct>? SupplierProducts { get; set; } = new HashSet<SupplierProduct>();
+
 
 
 }
