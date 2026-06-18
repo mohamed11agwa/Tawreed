@@ -12,18 +12,24 @@ namespace Tawreed.DAL.Models
 
         [Required]
         [MaxLength(100)]
-        public string Name { get; set; } = string.Empty;
+        public string NameAr { get; set; } = string.Empty;
+
+        [Required]
+        [MaxLength(100)]
+        public string NameEn { get; set; } = string.Empty;
+
+        public Guid? ParentId { get; set; }
+        public Region? Parent { get; set; }
 
         public bool IsActive { get; set; } = true;
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime? UpdatedAt { get; set; }
 
-        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
-
-
-        public ICollection<Buyer> Buyers { get; set; } = new HashSet<Buyer>();
-        public ICollection<Supplier> Suppliers { get; set; } = new HashSet<Supplier>();
-        public ICollection<GroupOrder> GroupOrders { get; set; } = new HashSet<GroupOrder>();
+        public ICollection<Region> Children { get; set; } = [];
+        public ICollection<Buyer> Buyers { get; set; } = [];
+        public ICollection<Supplier> Suppliers { get; set; } = [];
+        public ICollection<GroupOrder> GroupOrders { get; set; } = [];
 
 
     }

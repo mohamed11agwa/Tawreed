@@ -28,7 +28,6 @@ public class AuthService(
         if (user is null) return null;
 
         // block inactive (pending supplier approval)
-        if (!user.IsActive) return null;
 
         var isValidPassword = await _userManager.CheckPasswordAsync(user, password);
         if (!isValidPassword) return null;
@@ -54,7 +53,6 @@ public class AuthService(
             UserName = request.Email,
             PhoneNumber = request.Phone,
             FullName = request.FullName,
-            IsActive = true,   // buyers are active immediately
         };
 
         var result = await _userManager.CreateAsync(user, request.Password);
@@ -96,7 +94,6 @@ public class AuthService(
             UserName = request.Email,
             PhoneNumber = request.Phone,
             FullName = request.FullName,
-            IsActive = false,  // suppliers are inactive until admin approves
         };
 
         var result = await _userManager.CreateAsync(user, request.Password);
@@ -111,7 +108,6 @@ public class AuthService(
             UserId = user.Id,
             CompanyName = request.CompanyName,
             TaxNumber = request.TaxId,
-            CommercialRegister = request.CommercialRegister,
             CreatedAt = DateTime.UtcNow,
         };
 

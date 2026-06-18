@@ -15,7 +15,6 @@ namespace Tawreed.BLL.Extensions.MappingExtensions
                 UserId = supplier.UserId,
                 CompanyName = supplier.CompanyName,
                 TaxNumber = supplier.TaxNumber,
-                CommercialRegister = supplier.CommercialRegister,
             };
         }
 
@@ -25,7 +24,6 @@ namespace Tawreed.BLL.Extensions.MappingExtensions
             {
                 CompanyName = dto.CompanyName,
                 TaxNumber = dto.TaxNumber,
-                CommercialRegister = dto.CommercialRegister,
             };
         }
 
@@ -33,7 +31,6 @@ namespace Tawreed.BLL.Extensions.MappingExtensions
         {
             supplier.CompanyName = dto.CompanyName;
             supplier.TaxNumber = dto.TaxNumber;
-            supplier.CommercialRegister = dto.CommercialRegister;
         }
 
     }

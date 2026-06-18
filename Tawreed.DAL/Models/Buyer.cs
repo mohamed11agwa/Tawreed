@@ -5,16 +5,21 @@ namespace Tawreed.DAL.Models;
 
 public class Buyer
 {
+    [Required]
+    [Key]
     public Guid UserId { get; set; }
+
+    [ForeignKey(nameof(UserId))]
+    public ApplicationUser User { get; set; } = null!;
 
 
     [Required]
     [MaxLength(200)]
     public string BusinessName { get; set; } = string.Empty;
 
-    //[Required]
-    //[MaxLength(20)]
-    //public string BusinessType { get; set; } 
+    [Required]
+    [MaxLength(100)]
+    public string? BusinessType { get; set; } 
 
 
     [MaxLength(50)]
@@ -22,18 +27,15 @@ public class Buyer
 
     [Required]
     [MaxLength(500)]
-    public string Address { get; set; } = string.Empty;
-
-    public decimal? Latitude { get; set; }
-    public decimal? Longitude { get; set; }
+    public string? Address { get; set; }
 
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
 
     public Guid RegionId { get; set; }
-    public Region Region { get; set; } = default!;
-    public ApplicationUser User { get; set; } = default!;
+    public Region Region { get; set; } = null!;
+
     public ICollection<GroupOrder> CreatedOrders { get; set; } = new HashSet<GroupOrder>();
-    public ICollection<GroupOrderParticipant> ?Participations { get; set; } = [];
+    public ICollection<GroupOrderParticipant> Participations { get; set; } = [];
     
 }

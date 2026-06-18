@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
 using Tawreed.DAL.Enums;
 
@@ -18,7 +19,8 @@ public class GroupOrderParticipant
     public GroupOrder GroupOrder { get; set; } = null!;
 
     [Required]
-    public Guid BuyerId { get; set; }
+    public Guid BuyerUserId { get; set; }
+    [ForeignKey(nameof(BuyerUserId))]
     public Buyer Buyer { get; set; } = null!;
 
     public ICollection<ParticipantItem> Items { get; set; } = [];

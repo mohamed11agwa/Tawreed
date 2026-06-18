@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
+using Tawreed.DAL.Enums;
 
 namespace Tawreed.DAL.Models;
 
@@ -9,12 +10,13 @@ public class ApplicationUser : IdentityUser<Guid>
     [MaxLength(200)]
     public string FullName { get; set; } = string.Empty;
 
+    public UserStatus Status { get; set; } = UserStatus.Active;
+    public string? AvatarUrl { get; set; }
+
     [Required]
     [MaxLength(2)]
     public string PreferredLang { get; set; } = "ar";
-
-    public bool IsActive { get; set; } = true;
-
+    
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     public DateTime? UpdatedAt { get; set; }
@@ -22,10 +24,10 @@ public class ApplicationUser : IdentityUser<Guid>
     public DateTime? LastLoginAt { get; set; }
 
 
-    // Navigation
     public Buyer? Buyer { get; set; }
     public Supplier? Supplier { get; set; }
 
-    public ICollection<BusinessType> BusinessTypes { get; set; }= new HashSet<BusinessType>();
-    public ICollection<Notification> Notifications { get; set; } = new HashSet<Notification>();
+    public ICollection<Notification> Notifications { get; set; } = [];
+    public ICollection<GroupOrderEvent> TriggeredEvents { get; set; } = [];
+    public ICollection<SupplierApprovalLog> ApprovalActions { get; set; } = [];
 }

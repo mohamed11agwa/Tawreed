@@ -13,7 +13,6 @@ namespace Tawreed.BLL.Extensions.MappingExtensions
         public static RegionResponseDto ToDto(this Region region) => new()
         {
             Id = region.Id,
-            Name = region.Name,
             IsActive = region.IsActive,
 
         };
@@ -25,7 +24,6 @@ namespace Tawreed.BLL.Extensions.MappingExtensions
         public static Region ToModel(this CreateRegionDto dto) => new()
         {
             Id = Guid.NewGuid(),
-            Name = dto.Name.Trim(),
             IsActive = dto.IsActive,
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow,
@@ -34,13 +32,11 @@ namespace Tawreed.BLL.Extensions.MappingExtensions
         // Update DTO → existing Model
         public static void ApplyUpdate(this UpdateRegionDto dto, Region region)
         {
-            region.Name = dto.Name.Trim();
             region.IsActive = dto.IsActive;
             region.UpdatedAt = DateTime.UtcNow;
         }
         public static void ApplyPatch(this PatchRegionDto dto, Region region)
         {
-            if (dto.Name is not null) region.Name = dto.Name.Trim();
             if (dto.IsActive is not null) region.IsActive = dto.IsActive.Value;
             region.UpdatedAt = DateTime.UtcNow;
         }

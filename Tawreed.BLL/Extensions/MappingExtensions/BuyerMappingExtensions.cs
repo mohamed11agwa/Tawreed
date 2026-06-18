@@ -17,8 +17,7 @@ namespace Tawreed.BLL.Extensions.MappingExtensions
                 BusinessName = buyer.BusinessName,
                 TaxNumber = buyer.TaxNumber,
                 Address = buyer.Address,
-                Latitude = buyer.Latitude,
-                Longitude = buyer.Longitude,
+
             };
         }
 
@@ -29,8 +28,6 @@ namespace Tawreed.BLL.Extensions.MappingExtensions
                 BusinessName = dto.BusinessName,
                 TaxNumber = dto.TaxNumber,
                 Address = dto.Address,
-                Latitude = dto.Latitude,
-                Longitude = dto.Longitude,
                 RegionId = dto.RegionId
             };
         }
@@ -38,8 +35,7 @@ namespace Tawreed.BLL.Extensions.MappingExtensions
         public static void ApplyUpdate(this UpdateBuyerDto dto, Buyer buyer)
         {
             buyer.Address = dto.Address;
-            buyer.Latitude = dto.Latitude;
-            buyer.Longitude = dto.Longitude;
+
             buyer.RegionId = dto.RegionId;
         }
     }

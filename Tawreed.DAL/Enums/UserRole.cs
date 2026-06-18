@@ -4,9 +4,10 @@ using System.Text;
 
 namespace Tawreed.DAL.Enums
 {
-    public enum ParticipantStatus
+    public enum UserRole
     {
-        Active,
-        Cancelled
+        Buyer,
+        Supplier,
+        Admin
     }
 }

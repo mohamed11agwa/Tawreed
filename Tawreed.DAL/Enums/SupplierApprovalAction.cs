@@ -4,9 +4,11 @@ using System.Text;
 
 namespace Tawreed.DAL.Enums
 {
-    public enum ParticipantStatus
+    public enum SupplierApprovalAction
     {
-        Active,
-        Cancelled
+        Approved,
+        Rejected,
+        Suspended,
+        Reactivated
     }
 }

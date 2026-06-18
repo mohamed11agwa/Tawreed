@@ -10,26 +10,33 @@ namespace Tawreed.DAL.Models
     public class Notification
     {
         public Guid Id { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime? UpdatedAt { get; set; }
 
-
-        [MaxLength(100)]
-        public string Title { get; set; } = string.Empty;
+        [Required]
+        public Guid UserId { get; set; }
+        [ForeignKey(nameof(UserId))]
+        public ApplicationUser User { get; set; } = null!;
 
 
         [Required]
-        [MaxLength(30)]
-        public NotificationType Type { get; set; }
+        [MaxLength(200)]
+        public string TitleAr { get; set; } = string.Empty;
 
+        [Required]
+        [MaxLength(200)]
+        public string TitleEn { get; set; } = string.Empty;
 
-        public string? Body { get; set; }
+        [MaxLength(1000)]
+        public string? MessageAr { get; set; }
 
+        [MaxLength(1000)]
+        public string? MessageEn { get; set; }
 
-        public Guid UserId { get; set; }
-        public ApplicationUser User { get; set; } = default!;
+        [MaxLength(50)]
+        public string Type { get; set; } = "General";
 
-        public Guid GroupOrderId { get; set; }
-        public GroupOrder? GroupOrder { get; set; }
-
+        public bool IsRead { get; set; } = false;
 
     }
 }

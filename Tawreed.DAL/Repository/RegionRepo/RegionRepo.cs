@@ -10,18 +10,19 @@ namespace Tawreed.DAL.Repository.RegionRepo
 {
     public class RegionRepo(ApplicationDbContext context) : MainRepo<Region>(context), IRegionRepo
     {
-        public async Task<IEnumerable<Region>> GetActiveRegionsAsync()
-            => await _dbSet
-                .Where(r => r.IsActive)
-                .OrderBy(r => r.Name)
-                .ToListAsync();
+        public Task<bool> ExistsAsync(Guid id)
+        {
+            throw new NotImplementedException();
+        }
 
-        public async Task<bool> ExistsAsync(Guid id)
-            => await _dbSet.AnyAsync(r => r.Id == id);
+        public Task<IEnumerable<Region>> GetActiveRegionsAsync()
+        {
+            throw new NotImplementedException();
+        }
 
-        public async Task<bool> IsNameTakenAsync(string name, Guid? excludeId = null)
-            => await _dbSet.AnyAsync(r =>
-                r.Name.ToLower() == name.ToLower() &&
-                (excludeId == null || r.Id != excludeId));
+        public Task<bool> IsNameTakenAsync(string name, Guid? excludeId = null)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
