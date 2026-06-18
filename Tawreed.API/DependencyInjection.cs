@@ -58,7 +58,9 @@ namespace Tawreed.API
             var assemblies = new[]
                 {
                     Assembly.GetExecutingAssembly(),                  // الـ API
-                    typeof(RegisterSupplierRequestValidator).Assembly  // الـ BLL
+                    typeof(RegisterSupplierRequestValidator).Assembly,
+                    typeof(RegisterBuyerRequestValidator).Assembly  ,
+                    typeof(LoginRequestValidator).Assembly  // الـ BLL
                 };
             services.AddFluentValidationAutoValidation()
                 //.AddValidatorsFromAssemblyContaining<RegisterBuyerRequestValidator>();

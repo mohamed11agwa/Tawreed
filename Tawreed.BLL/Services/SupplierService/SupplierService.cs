@@ -16,10 +16,7 @@ namespace Tawreed.BLL.Services.SupplierService
             _supplierRepo = supplierRepo;
         }
 
-        public Task<SupplierResponseDto> CreateSupplier(CreateSupplierDto dto)
-        {
-            throw new NotImplementedException();
-        }
+     
 
         public Task<bool> DeleteSupplierByUserId(Guid userId)
         {

@@ -19,16 +19,7 @@ namespace Tawreed.BLL.Extensions.MappingExtensions
             };
         }
 
-        public static Supplier ToModel(this CreateSupplierDto dto)
-        {
-            return new Supplier
-            {
-                CompanyName = dto.CompanyName,
-                TaxNumber = dto.TaxNumber,
-                CommercialRegister = dto.CommercialRegister,
-            };
-        }
-
+      
         public static void ApplyUpdates(this UpdateSupplierDto dto, Supplier supplier)
         {
             supplier.CompanyName = dto.CompanyName;

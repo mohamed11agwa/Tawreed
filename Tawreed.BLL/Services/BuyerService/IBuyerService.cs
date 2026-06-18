@@ -9,8 +9,10 @@ namespace Tawreed.BLL.Services.BuyerService
     {
         Task<IEnumerable<BuyerResponseDto>> GetAllBuyersAsync();
         Task<BuyerResponseDto> GetBuyerByUserId(Guid userId);
-        Task<BuyerResponseDto> CreateBuyer(CreateBuyerDto dto);
+
         Task<BuyerResponseDto> UpdateBuyer(Guid userId, UpdateBuyerDto dto);
         Task<bool> DeleteBuyerAsync(Guid userId);
+
+        Task<BuyerResponseDto?> PatchBuyerAsync(Guid userId, PatchBuyerDto dto);
     }
 }

@@ -12,8 +12,8 @@ using Tawreed.DAL.Data;
 namespace Tawreed.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260618005620_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20260618155944_refesh token table")]
+    partial class refeshtokentable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
