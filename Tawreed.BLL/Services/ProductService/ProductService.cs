@@ -67,5 +67,23 @@ namespace Tawreed.BLL.Services.ProductService
             await _productRepo.SaveChangesAsync();
             return true;
         }
+
+        public async Task<ProductResponseDto?> PatchAsync(Guid id, PatchProductDto dto)
+        {
+            var product = await _productRepo.GetByIdAsync(id);
+            if (product is null) return null;
+
+            if (dto.CategoryId is not null)
+            {
+                var categoryExists = await _categoryRepo.ExistsAsync(dto.CategoryId.Value);
+                if (!categoryExists)
+                    throw new KeyNotFoundException($"Category with id '{dto.CategoryId}' not found.");
+            }
+
+            dto.ApplyPatch(product);
+            await _productRepo.UpdateAsync(product);
+            await _productRepo.SaveChangesAsync();
+            return product.ToDto();
+        }
     }
 }

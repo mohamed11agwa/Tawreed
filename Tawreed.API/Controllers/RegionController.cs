@@ -11,11 +11,13 @@ namespace Tawreed.API.Controllers
     public class RegionsController(
        IRegionService service,
        IValidator<CreateRegionDto> createValidator,
-       IValidator<UpdateRegionDto> updateValidator) : ControllerBase
+       IValidator<UpdateRegionDto> updateValidator,
+         IValidator<PatchRegionDto> patchValidator) : ControllerBase
     {
         private readonly IRegionService _service = service;
         private readonly IValidator<CreateRegionDto> _createValidator = createValidator;
         private readonly IValidator<UpdateRegionDto> _updateValidator = updateValidator;
+        private readonly IValidator<PatchRegionDto> _patchValidator = patchValidator;
 
         // GET api/regions
         [HttpGet]
@@ -71,6 +73,16 @@ namespace Tawreed.API.Controllers
         {
             var deleted = await _service.DeleteAsync(id);
             return deleted ? NoContent() : NotFound();
+        }
+        [HttpPatch("{id:guid}")]
+        public async Task<IActionResult> Patch(Guid id, [FromBody] PatchRegionDto dto)
+        {
+            var validation = await _patchValidator.ValidateAsync(dto);
+            if (!validation.IsValid)
+                return BadRequest(validation.Errors.Select(e => e.ErrorMessage));
+
+            var patched = await _service.PatchAsync(id, dto);
+            return patched is null ? NotFound() : Ok(patched);
         }
     }
 

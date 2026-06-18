@@ -10,7 +10,7 @@ namespace Tawreed.DAL.Repository.CategoryRepo
     public interface ICategoryRepo : IMainRepo<Category>
     {
         Task<bool> ExistsAsync(Guid id);
-        Task<Category?> GetByNameAsync(CategoryName name);
-        Task<bool> IsNameTakenAsync(CategoryName name, Guid? excludeId = null);
+        Task<Category?> GetByNameAsync(string name);
+        Task<bool> IsNameTakenAsync(string name, Guid? excludeId = null);
     }
 }

@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-
 using Tawreed.DAL.Models;
 
 namespace Tawreed.DAL.Data;
@@ -20,7 +19,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
     public DbSet<SupplierProduct> SupplierProducts { get; set; }
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-            : base(options)
+        : base(options)
     {
     }
 
@@ -28,12 +27,14 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
     {
         if (!optionsBuilder.IsConfigured)
         {
-            optionsBuilder.UseSqlServer("Data Source=MOHAMED\\SQLEXPRESS;Initial Catalog=TawreedDB;Integrated Security=True;Encrypt=True;Trust Server Certificate=True");
+            optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=TawreedDB;Integrated Security=True;Encrypt=True;Trust Server Certificate=True");
         }
         base.OnConfiguring(optionsBuilder);
     }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        // ── Buyer ─────────────────────────────────────────────────────────
         modelBuilder.Entity<Buyer>()
             .HasKey(b => b.UserId);
 
@@ -42,6 +43,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
             .WithOne(u => u.Buyer)
             .HasForeignKey<Buyer>(b => b.UserId);
 
+        // ── Supplier ──────────────────────────────────────────────────────
         modelBuilder.Entity<Supplier>()
             .HasKey(s => s.UserId);
 
@@ -50,13 +52,65 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
             .WithOne(u => u.Supplier)
             .HasForeignKey<Supplier>(s => s.UserId);
 
-        var CascadeFKs = modelBuilder.Model.GetEntityTypes()
-                .SelectMany(t => t.GetForeignKeys())
-                .Where(fk => !fk.IsOwnership && fk.DeleteBehavior == DeleteBehavior.Cascade);
+        // Supplier M-to-M Region
+        modelBuilder.Entity<Supplier>()
+            .HasMany(s => s.Regions)
+            .WithMany(r=>r.Suppliers)
+            .UsingEntity(j => j.ToTable("SupplierRegions"));
 
-        foreach (var fk in CascadeFKs)
+
+
+
+        // ── ApplicationUser M-to-M Category (preferences) ────────────────
+        modelBuilder.Entity<ApplicationUser>()
+      .HasMany(u => u.BusinessTypes)
+      .WithMany(b => b.Users)
+      .UsingEntity(j => j.ToTable("UserBusinessTypes"));
+
+        // ── SupplierProduct ───────────────────────────────────────────────
+        modelBuilder.Entity<SupplierProduct>()
+            .HasKey(sp => new { sp.SupplierId, sp.ProductId });
+
+        modelBuilder.Entity<SupplierProduct>()
+            .HasOne(sp => sp.Supplier)
+            .WithMany(s => s.SupplierProducts)
+            .HasForeignKey(sp => sp.SupplierId);
+
+        modelBuilder.Entity<SupplierProduct>()
+            .HasOne(sp => sp.Product)
+            .WithMany(p => p.SupplierProducts)
+            .HasForeignKey(sp => sp.ProductId);
+
+        // ── GroupOrder ────────────────────────────────────────────────────
+        modelBuilder.Entity<GroupOrder>()
+            .HasOne(g => g.Buyer)
+            .WithMany(b => b.CreatedOrders)
+            .HasForeignKey(g => g.CreatorId);
+
+        // ── GroupOrderParticipant ─────────────────────────────────────────
+        modelBuilder.Entity<GroupOrderParticipant>()
+            .HasOne(gop => gop.Buyer)
+            .WithMany(b => b.Participations)
+            .HasForeignKey(gop => gop.BuyerId);
+
+        modelBuilder.Entity<GroupOrderParticipant>()
+            .HasOne(gop => gop.GroupOrder)
+            .WithMany(g => g.Participations)
+            .HasForeignKey(gop => gop.GroupOrderId);
+
+        // ── Notification ──────────────────────────────────────────────────
+        modelBuilder.Entity<Notification>()
+            .HasOne(n => n.User)
+            .WithMany(u => u.Notifications)
+            .HasForeignKey(n => n.UserId);
+
+        // ── Global: replace all Cascade deletes with Restrict ─────────────
+        var cascadeFKs = modelBuilder.Model.GetEntityTypes()
+            .SelectMany(t => t.GetForeignKeys())
+            .Where(fk => !fk.IsOwnership && fk.DeleteBehavior == DeleteBehavior.Cascade);
+
+        foreach (var fk in cascadeFKs)
             fk.DeleteBehavior = DeleteBehavior.Restrict;
-
 
         base.OnModelCreating(modelBuilder);
     }

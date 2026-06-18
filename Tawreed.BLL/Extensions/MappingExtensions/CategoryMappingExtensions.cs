@@ -12,7 +12,7 @@ namespace Tawreed.BLL.Extensions.MappingExtensions
         public static CategoryResponseDto ToDto(this Category category) => new()
         {
             Id = category.Id,
-            Name = category.Name.ToString(),
+            Name = category.Name,
         };
 
         public static IEnumerable<CategoryResponseDto> ToDtoList(this IEnumerable<Category> categories)
@@ -30,5 +30,6 @@ namespace Tawreed.BLL.Extensions.MappingExtensions
         {
             category.Name = dto.Name;
         }
+      
     }
 }

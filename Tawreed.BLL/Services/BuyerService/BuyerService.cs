@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 using Tawreed.BLL.Dtos.Buyer;
 using Tawreed.BLL.Extensions.MappingExtensions;
-using Tawreed.DAL.Migrations;
 using Tawreed.DAL.Repository.BuyerRepo;
 
 namespace Tawreed.BLL.Services.BuyerService
