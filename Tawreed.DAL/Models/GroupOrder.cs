@@ -11,28 +11,40 @@ namespace Tawreed.DAL.Models
     {
         public Guid Id { get; set; }
 
-
         [Required]
         [MaxLength(200)]
-        public string Title { get; set; } = null!;
+        public string Title { get; set; } = string.Empty;
+        [MaxLength(2000)]
 
         public string? Description { get; set; }
-
-        public DateTime DeadlineAt { get; set; }
+        public DateTime Deadline { get; set; }
+        public DateTime? ClosedAt { get; set; }
 
         [Required]
         [MaxLength(20)]
-        public GroupOrderStatus Status { get; set; } = GroupOrderStatus.Open;
+        public GroupOrderStatus Status { get; set; } = GroupOrderStatus.Draft;
+
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal TotalOrderValue { get; set; }
 
 
+        [Required]
+        public Guid SupplierUserId { get; set; }
+        public Supplier? Supplier { get; set; }
 
 
         public Guid CreatorId { get; set; }
-        public Buyer Buyer { get; set; } = default!;
+        [ForeignKey(nameof(CreatorId))]
+        public Buyer? Buyer { get; set; }
 
+        [Required]
         public Guid RegionId { get; set; }
-        public Region Region { get; set; } = default!;
-        public ICollection<GroupOrderParticipant> Participations { get; set; } = [];
+        public Region? Region { get; set; }
 
+        public Delivery? Delivery { get; set; }
+
+        public ICollection<GroupOrderParticipant> Participants { get; set; } = [];
+        public ICollection<GroupOrderItem> Items { get; set; } = [];
+        public ICollection<GroupOrderEvent> Events { get; set; } = [];
     }
 }

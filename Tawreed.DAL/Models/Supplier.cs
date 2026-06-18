@@ -27,6 +27,7 @@ public class Supplier
     public ApplicationUser User { get; set; } = default!;
     public ICollection<Region> Regions { get; set; } = new HashSet<Region>();
     public ICollection<SupplierProduct>? SupplierProducts { get; set; } = new HashSet<SupplierProduct>();
+    public ICollection<GroupOrder> GroupOrders { get; set; } = new HashSet<GroupOrder>();
 
 
 

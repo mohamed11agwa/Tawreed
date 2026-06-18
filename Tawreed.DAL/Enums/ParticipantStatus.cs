@@ -4,12 +4,8 @@ using System.Text;
 
 namespace Tawreed.DAL.Enums
 {
-    public enum GroupOrderStatus
+    public enum ParticipantStatus
     {
-        Draft,
-        Open,
-        Closed,
-        Fulfilled,
-        Cancelled
+        Active,
     }
 }
