@@ -3,8 +3,10 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using SharpGrip.FluentValidation.AutoValidation.Mvc.Extensions;
 using System.Reflection;
 using System.Text;
+using Tawreed.BLL.Contracts.Authentication;
 using Tawreed.BLL.Services.AuthService;
 using Tawreed.BLL.Services.CategoryService;
 using Tawreed.BLL.Services.ProductService;
@@ -34,7 +36,7 @@ namespace Tawreed.API
             services.AddAuthConfig(configuration);
 
 
-            //services.AddFluentValidationConfig();
+            services.AddFluentValidationConfig();
 
            services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IJwtProvider, JwtProvider>();
@@ -51,12 +53,19 @@ namespace Tawreed.API
 
 
 
-        //private static IServiceCollection AddFluentValidationConfig(this IServiceCollection services)
-        //{
-        //    services.AddFluentValidationAutoValidation()
-        //        .AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-        //    return services;
-        //}
+        private static IServiceCollection AddFluentValidationConfig(this IServiceCollection services)
+        {
+            var assemblies = new[]
+                {
+                    Assembly.GetExecutingAssembly(),                  // الـ API
+                    typeof(RegisterSupplierRequestValidator).Assembly  // الـ BLL
+                };
+            services.AddFluentValidationAutoValidation()
+                //.AddValidatorsFromAssemblyContaining<RegisterBuyerRequestValidator>();
+                .AddValidatorsFromAssemblies(assemblies);
+                //.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+            return services;
+        }
 
 
         private static IServiceCollection AddAuthConfig(this IServiceCollection services, IConfiguration configuration)

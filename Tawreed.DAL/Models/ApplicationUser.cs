@@ -28,4 +28,6 @@ public class ApplicationUser : IdentityUser<Guid>
 
     public ICollection<BusinessType> BusinessTypes { get; set; }= new HashSet<BusinessType>();
     public ICollection<Notification> Notifications { get; set; } = new HashSet<Notification>();
+
+    public List<RefreshToken> RefreshTokens { get; set; } = [];
 }

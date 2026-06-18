@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 using Tawreed.DAL.Models;
 
 namespace Tawreed.DAL.Data;
@@ -34,6 +35,10 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        
+        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
+
         // ── Buyer ─────────────────────────────────────────────────────────
         modelBuilder.Entity<Buyer>()
             .HasKey(b => b.UserId);
