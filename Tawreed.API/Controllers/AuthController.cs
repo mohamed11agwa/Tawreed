@@ -1,26 +1,17 @@
-﻿using FluentValidation;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Tawreed.BLL.Contracts.Authentication;
 using Tawreed.BLL.Services.AuthService;
 
 namespace Tawreed.API.Controllers
 {
+    [Route("api/auth")]
     [ApiController]
     public class AuthController(IAuthService authService, IOptions<JwtOptions> jwtOptions) : ControllerBase
-    [Route("api/auth")]
-    public class AuthController(
-     IAuthService authService,
-     IValidator<LoginRequest> loginValidator,
-     IValidator<RegisterBuyerRequest> registerBuyerValidator,
-     IValidator<RegisterSupplierRequest> registerSupplierValidator) : ControllerBase
     {
         private readonly IAuthService _authService = authService;
         private readonly JwtOptions _jwtOptions = jwtOptions.Value;
 
-        private readonly IValidator<LoginRequest> _loginValidator = loginValidator;
-        private readonly IValidator<RegisterBuyerRequest> _registerBuyerValidator = registerBuyerValidator;
-        private readonly IValidator<RegisterSupplierRequest> _registerSupplierValidator = registerSupplierValidator;
 
         // POST api/auth/login
         [HttpPost("login")]
@@ -28,10 +19,7 @@ namespace Tawreed.API.Controllers
             [FromBody] LoginRequest request,
             CancellationToken cancellationToken)
         {
-            var validation = await _loginValidator.ValidateAsync(request, cancellationToken);
-            if (!validation.IsValid)
-                return BadRequest(validation.Errors.Select(e => e.ErrorMessage));
-
+    
             var response = await _authService.GetTokenAsync(request.Email, request.Password, cancellationToken);
 
             if (response is null)
@@ -46,10 +34,6 @@ namespace Tawreed.API.Controllers
             [FromBody] RegisterBuyerRequest request,
             CancellationToken cancellationToken)
         {
-            var validation = await _registerBuyerValidator.ValidateAsync(request, cancellationToken);
-            if (!validation.IsValid)
-                return BadRequest(validation.Errors.Select(e => e.ErrorMessage));
-
             var response = await _authService.RegisterBuyerAsync(request, cancellationToken);
 
             if (response is null)
@@ -60,21 +44,28 @@ namespace Tawreed.API.Controllers
 
         // POST api/auth/register/supplier
         [HttpPost("register/supplier")]
-        public async Task<IActionResult> RegisterSupplier(
-            [FromBody] RegisterSupplierRequest request,
-            CancellationToken cancellationToken)
+        public async Task<IActionResult> RegisterSupplier([FromBody] RegisterSupplierRequest request, CancellationToken cancellationToken)
         {
-            var validation = await _registerSupplierValidator.ValidateAsync(request, cancellationToken);
-            if (!validation.IsValid)
-                return BadRequest(validation.Errors.Select(e => e.ErrorMessage));
-
             var response = await _authService.RegisterSupplierAsync(request, cancellationToken);
 
-            if (response is null)
-                return Conflict("Email is already registered.");
+            //if (response is null)
+            //    return Conflict("Email is already registered.");
 
-            // 202 Accepted — account created but pending admin approval
-            return Accepted(new { message = "Registration successful. Your account is pending admin approval.", userId = response.Id });
+            //// 202 Accepted — account created but pending admin approval
+            //return Accepted(new { message = "Registration successful. Your account is pending admin approval.", userId = response.Id });
+            return request is null ?
+                BadRequest("Email IS Duplicated") : Ok(response);
+        }
+
+
+        [HttpPost("refresh")]
+        public async Task<ActionResult> Refresh(RefreshTokenRequest request, CancellationToken cancellationToken)
+        {
+            var authresult = await _authService.GetRefreshTokenAsync(request.token, request.refreshToken, cancellationToken);
+
+            if (authresult is null)
+                return BadRequest("Invalid Token");
+            return Ok(authresult);
         }
     }
 }
