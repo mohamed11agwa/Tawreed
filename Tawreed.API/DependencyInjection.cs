@@ -31,7 +31,7 @@ namespace Tawreed.API
 
             services.AddControllers();
 
-            services.AddAuthConfig();
+            services.AddAuthConfig(configuration);
 
 
             //services.AddFluentValidationConfig();
@@ -59,12 +59,18 @@ namespace Tawreed.API
         //}
 
 
-        private static IServiceCollection AddAuthConfig(this IServiceCollection services)
+        private static IServiceCollection AddAuthConfig(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddIdentity<ApplicationUser, IdentityRole<Guid>>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
 
+            services.AddOptions<JwtOptions>()
+                .Bind(configuration.GetSection(JwtOptions.SectionName))
+                .ValidateDataAnnotations()
+                .ValidateOnStart();
+
+            var jwtOptions = configuration.GetSection(JwtOptions.SectionName).Get<JwtOptions>();
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -79,9 +85,9 @@ namespace Tawreed.API
                     ValidateIssuer = true,
                     ValidateAudience = true,
                     ValidateLifetime = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("KUtx6ixpTmrdEeIA06cmMzjJc8xNZhYr6SBBAd0PPTt")),
-                    ValidIssuer = "TawreedApp",
-                    ValidAudience = "Tawreed.users",
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions?.Key!)),
+                    ValidIssuer = jwtOptions?.Issuer,
+                    ValidAudience = jwtOptions?.Audience,
                 };
             });
 

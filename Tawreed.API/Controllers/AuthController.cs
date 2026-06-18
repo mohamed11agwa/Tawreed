@@ -1,11 +1,13 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Tawreed.BLL.Contracts.Authentication;
 using Tawreed.BLL.Services.AuthService;
 
 namespace Tawreed.API.Controllers
 {
     [ApiController]
+    public class AuthController(IAuthService authService, IOptions<JwtOptions> jwtOptions) : ControllerBase
     [Route("api/auth")]
     public class AuthController(
      IAuthService authService,
@@ -14,6 +16,8 @@ namespace Tawreed.API.Controllers
      IValidator<RegisterSupplierRequest> registerSupplierValidator) : ControllerBase
     {
         private readonly IAuthService _authService = authService;
+        private readonly JwtOptions _jwtOptions = jwtOptions.Value;
+
         private readonly IValidator<LoginRequest> _loginValidator = loginValidator;
         private readonly IValidator<RegisterBuyerRequest> _registerBuyerValidator = registerBuyerValidator;
         private readonly IValidator<RegisterSupplierRequest> _registerSupplierValidator = registerSupplierValidator;

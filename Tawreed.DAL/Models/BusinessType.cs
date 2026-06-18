@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
-using Tawreed.DAL.Enums;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Tawreed.DAL.Models
 {
