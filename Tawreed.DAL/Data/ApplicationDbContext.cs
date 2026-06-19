@@ -28,7 +28,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
     {
         if (!optionsBuilder.IsConfigured)
         {
-            optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=TawreedDB;Integrated Security=True;Encrypt=True;Trust Server Certificate=True");
+            optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=TawreedDBTest;Integrated Security=True;Encrypt=True;Trust Server Certificate=True");
         }
         base.OnConfiguring(optionsBuilder);
     }
