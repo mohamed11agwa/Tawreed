@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Tawreed.BLL.Dtos.GroupOrder;
+﻿using Tawreed.BLL.Dtos.GroupOrder;
 using Tawreed.BLL.Extensions.MappingExtensions;
 using Tawreed.DAL.Repository.GroupOrderRepo;
 

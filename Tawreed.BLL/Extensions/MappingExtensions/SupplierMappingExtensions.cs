@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Tawreed.BLL.Dtos.Supplier;
+﻿using Tawreed.BLL.Dtos.Supplier;
 using Tawreed.DAL.Models;
 
 namespace Tawreed.BLL.Extensions.MappingExtensions
@@ -22,6 +19,7 @@ namespace Tawreed.BLL.Extensions.MappingExtensions
         {
             return new Supplier
             {
+                
                 CompanyName = dto.CompanyName,
                 TaxNumber = dto.TaxNumber,
             };

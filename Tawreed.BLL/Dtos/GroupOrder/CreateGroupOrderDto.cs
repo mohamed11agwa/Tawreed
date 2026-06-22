@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Tawreed.BLL.Dtos.GroupOrder
+﻿namespace Tawreed.BLL.Dtos.GroupOrder
 {
     public class CreateGroupOrderDto
     {

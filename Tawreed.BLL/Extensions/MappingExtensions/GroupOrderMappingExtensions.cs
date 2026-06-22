@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Tawreed.BLL.Dtos.GroupOrder;
+﻿using Tawreed.BLL.Dtos.GroupOrder;
 using Tawreed.DAL.Enums;
 using Tawreed.DAL.Models;
 
@@ -17,7 +14,6 @@ namespace Tawreed.BLL.Extensions.MappingExtensions
                 Title = entity.Title,
                 Description = entity.Description,
                 DeadlineAt = entity.DeadlineAt,
-                Status = entity.Status,
                 CreatorId = entity.CreatorId,
                 RegionId = entity.RegionId
             };
@@ -33,7 +29,6 @@ namespace Tawreed.BLL.Extensions.MappingExtensions
                 DeadlineAt = dto.DeadlineAt,
                 CreatorId = dto.CreatorId,
                 RegionId = dto.RegionId,
-                Status = GroupOrderStatus.Open
             };
         }
 
@@ -42,7 +37,6 @@ namespace Tawreed.BLL.Extensions.MappingExtensions
             entity.Title = dto.Title;
             entity.Description = dto.Description;
             entity.DeadlineAt = dto.DeadlineAt;
-            entity.Status = dto.Status;
         }
     }
 }

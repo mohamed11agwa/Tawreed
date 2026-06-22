@@ -2,12 +2,10 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using SharpGrip.FluentValidation.AutoValidation.Mvc.Extensions;
 using System.Reflection;
 using System.Text;
-using Tawreed.BLL.Contracts.Authentication;
 using Tawreed.BLL.Services.AuthService;
 using Tawreed.BLL.Services.CategoryService;
 using Tawreed.BLL.Services.GroupOrderParticipants;
@@ -84,7 +82,6 @@ namespace Tawreed.API
 
             var jwtOptions = configuration.GetSection(JwtOptions.SectionName).Get<JwtOptions>();
 
-            var jwtOptions = configuration.GetSection(JwtOptions.SectionName).Get<JwtOptions>();
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
