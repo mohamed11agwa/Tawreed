@@ -5,5 +5,7 @@ public record AuthResponse(
     string? Eamil,
     string FullName,
     string Token,
-    int ExpiresIn
+    int ExpiresIn,
+    string RefreshToken,
+    DateTime RefreshTokenExpiration
 );

@@ -1,9 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
+
 using Tawreed.DAL.Data;
-using Tawreed.DAL.Enums;
 using Tawreed.DAL.Models;
 using Tawreed.DAL.Repository.MainRepo;
 

@@ -8,14 +8,9 @@ namespace Tawreed.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class CategoriesController(
-     ICategoryService service,
-     IValidator<CreateCategoryDto> createValidator,
-     IValidator<UpdateCategoryDto> updateValidator) : ControllerBase
+    public class CategoriesController(ICategoryService service) : ControllerBase
     {
         private readonly ICategoryService _service = service;
-        private readonly IValidator<CreateCategoryDto> _createValidator = createValidator;
-        private readonly IValidator<UpdateCategoryDto> _updateValidator = updateValidator;
 
         // GET api/categories
         [HttpGet]
@@ -37,10 +32,6 @@ namespace Tawreed.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateCategoryDto dto)
         {
-            var validation = await _createValidator.ValidateAsync(dto);
-            if (!validation.IsValid)
-                return BadRequest(validation.Errors.Select(e => e.ErrorMessage));
-
             try
             {
                 var created = await _service.CreateAsync(dto);
@@ -56,10 +47,6 @@ namespace Tawreed.API.Controllers
         [HttpPut("{id:guid}")]
         public async Task<IActionResult> Update(Guid id, [FromBody] UpdateCategoryDto dto)
         {
-            var validation = await _updateValidator.ValidateAsync(dto);
-            if (!validation.IsValid)
-                return BadRequest(validation.Errors.Select(e => e.ErrorMessage));
-
             try
             {
                 var updated = await _service.UpdateAsync(id, dto);

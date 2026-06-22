@@ -8,16 +8,9 @@ namespace Tawreed.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class RegionsController(
-       IRegionService service,
-       IValidator<CreateRegionDto> createValidator,
-       IValidator<UpdateRegionDto> updateValidator,
-         IValidator<PatchRegionDto> patchValidator) : ControllerBase
+    public class RegionsController(IRegionService service) : ControllerBase
     {
         private readonly IRegionService _service = service;
-        private readonly IValidator<CreateRegionDto> _createValidator = createValidator;
-        private readonly IValidator<UpdateRegionDto> _updateValidator = updateValidator;
-        private readonly IValidator<PatchRegionDto> _patchValidator = patchValidator;
 
         // GET api/regions
         [HttpGet]
@@ -47,10 +40,6 @@ namespace Tawreed.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateRegionDto dto)
         {
-            var validation = await _createValidator.ValidateAsync(dto);
-            if (!validation.IsValid)
-                return BadRequest(validation.Errors.Select(e => e.ErrorMessage));
-
             var created = await _service.CreateAsync(dto);
             return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
         }
@@ -59,10 +48,6 @@ namespace Tawreed.API.Controllers
         [HttpPut("{id:guid}")]
         public async Task<IActionResult> Update(Guid id, [FromBody] UpdateRegionDto dto)
         {
-            var validation = await _updateValidator.ValidateAsync(dto);
-            if (!validation.IsValid)
-                return BadRequest(validation.Errors.Select(e => e.ErrorMessage));
-
             var updated = await _service.UpdateAsync(id, dto);
             return updated is null ? NotFound() : Ok(updated);
         }
@@ -77,10 +62,6 @@ namespace Tawreed.API.Controllers
         [HttpPatch("{id:guid}")]
         public async Task<IActionResult> Patch(Guid id, [FromBody] PatchRegionDto dto)
         {
-            var validation = await _patchValidator.ValidateAsync(dto);
-            if (!validation.IsValid)
-                return BadRequest(validation.Errors.Select(e => e.ErrorMessage));
-
             var patched = await _service.PatchAsync(id, dto);
             return patched is null ? NotFound() : Ok(patched);
         }
