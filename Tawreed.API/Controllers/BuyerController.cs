@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Tawreed.BLL.Constants;
 using Tawreed.BLL.Dtos.Buyer;
 using Tawreed.BLL.Services.BuyerService;
 
@@ -27,7 +29,7 @@ namespace Tawreed.API.Controllers
             return Ok(res);
         }
 
-
+        [Authorize (Roles = AppRoles.Admin)]
         [HttpGet("{userId:guid}")]
         public async Task<IActionResult> GetBuyerById([FromRoute] Guid userId)
         {
@@ -43,12 +45,6 @@ namespace Tawreed.API.Controllers
         }
 
 
-        [HttpPost]
-        public async Task<IActionResult> CreateBuyer([FromBody] CreateBuyerDto createDto)
-        {
-            throw new NotImplementedException();
-        }
-
         [HttpPut("{userId:guid}")]
         public async Task<IActionResult> UpdateBuyer([FromRoute] Guid userId, [FromBody] UpdateBuyerDto updateDto)
         {
@@ -62,6 +58,21 @@ namespace Tawreed.API.Controllers
 
             return Ok(res);
 
+        }
+        [HttpPatch("{userId:guid}")]
+        public async Task<IActionResult> PatchBuyer(
+    [FromRoute] Guid userId,
+    [FromBody] PatchBuyerDto patchDto)
+        {
+            if (userId == Guid.Empty || patchDto == null)
+                return BadRequest();
+
+            var res = await _buyerService.PatchBuyerAsync(userId, patchDto);
+
+            if (res == null)
+                return NotFound();
+
+            return Ok(res);
         }
 
         [HttpDelete("{userId:guid}")]

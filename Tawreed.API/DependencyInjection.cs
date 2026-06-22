@@ -7,13 +7,18 @@ using Microsoft.IdentityModel.Tokens;
 using SharpGrip.FluentValidation.AutoValidation.Mvc.Extensions;
 using System.Reflection;
 using System.Text;
+using Tawreed.BLL.Contracts.Authentication;
 using Tawreed.BLL.Services.AuthService;
 using Tawreed.BLL.Services.CategoryService;
+using Tawreed.BLL.Services.GroupOrderParticipants;
+using Tawreed.BLL.Services.GroupOrderService;
 using Tawreed.BLL.Services.ProductService;
 using Tawreed.BLL.Services.RegionService;
 using Tawreed.DAL.Data;
 using Tawreed.DAL.Models;
 using Tawreed.DAL.Repository.CategoryRepo;
+using Tawreed.DAL.Repository.GroupOrderRepo;
+using Tawreed.DAL.Repository.MainRepo;
 using Tawreed.DAL.Repository.ProductRepo;
 using Tawreed.DAL.Repository.RegionRepo;
 
@@ -46,6 +51,10 @@ namespace Tawreed.API
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IProductRepo, ProductRepo>();
             services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IGroupOrderRepo, GroupOrderRepo>();
+            services.AddScoped<IMainRepo<GroupOrderParticipant>, MainRepo<GroupOrderParticipant>>();
+            services.AddScoped<IGroupOrderService, GroupOrderService>();
+            services.AddScoped<IGroupOrderParticipantService, GroupOrderParticipantService>();
 
             return services;
         }
@@ -75,6 +84,7 @@ namespace Tawreed.API
 
             var jwtOptions = configuration.GetSection(JwtOptions.SectionName).Get<JwtOptions>();
 
+            var jwtOptions = configuration.GetSection(JwtOptions.SectionName).Get<JwtOptions>();
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

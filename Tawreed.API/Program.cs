@@ -11,7 +11,6 @@ namespace Tawreed.API
             // Add services to the container.
             builder.Services.AddDependencies(builder.Configuration);
 
-            builder.Services.AddApplicationServices();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
             builder.Services.AddEndpointsApiExplorer();
@@ -39,7 +38,10 @@ namespace Tawreed.API
 
 
             app.MapControllers();
-
+            app.Map("/home", () =>
+            {
+                return Results.Ok("hello");
+            });
             app.Run();
         }
     }

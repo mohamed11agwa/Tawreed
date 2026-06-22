@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 namespace Tawreed.DAL.Models;
 
+namespace Tawreed.DAL.Models;
 [Owned]
 public class RefreshToken
 {

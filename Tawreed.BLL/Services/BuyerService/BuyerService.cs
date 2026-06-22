@@ -16,10 +16,6 @@ namespace Tawreed.BLL.Services.BuyerService
             _buyerRepo = buyerRepo;
         }
 
-        public Task<BuyerResponseDto> CreateBuyer(CreateBuyerDto dto)
-        {
-            throw new NotImplementedException();
-        }
 
         public async Task<bool> DeleteBuyerAsync(Guid userId)
         {
@@ -65,6 +61,19 @@ namespace Tawreed.BLL.Services.BuyerService
             dto.ApplyUpdate(buyer);
 
             await _buyerRepo.UpdateAsync(buyer);
+            return buyer.ToDto();
+        }
+        public async Task<BuyerResponseDto?> PatchBuyerAsync(Guid userId, PatchBuyerDto dto)
+        {
+            var buyer = await _buyerRepo.GetByIdAsync(userId);
+
+            if (buyer == null)
+                return null;
+
+            dto.ApplyPatch(buyer);
+
+            await _buyerRepo.UpdateAsync(buyer);
+
             return buyer.ToDto();
         }
     }

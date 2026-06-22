@@ -22,18 +22,7 @@ namespace Tawreed.BLL.Extensions.MappingExtensions
             };
         }
 
-        public static Buyer ToModel(this CreateBuyerDto dto)
-        {
-            return new Buyer
-            {
-                BusinessName = dto.BusinessName,
-                TaxNumber = dto.TaxNumber,
-                Address = dto.Address,
-                Latitude = dto.Latitude,
-                Longitude = dto.Longitude,
-                RegionId = dto.RegionId
-            };
-        }
+       
 
         public static void ApplyUpdate(this UpdateBuyerDto dto, Buyer buyer)
         {
@@ -42,5 +31,20 @@ namespace Tawreed.BLL.Extensions.MappingExtensions
             buyer.Longitude = dto.Longitude;
             buyer.RegionId = dto.RegionId;
         }
+        public static void ApplyPatch(this PatchBuyerDto dto, Buyer buyer)
+        {
+            if (dto.Address is not null)
+                buyer.Address = dto.Address;
+
+            if (dto.Latitude.HasValue)
+                buyer.Latitude = dto.Latitude;
+
+            if (dto.Longitude.HasValue)
+                buyer.Longitude = dto.Longitude;
+
+            if (dto.RegionId.HasValue)
+                buyer.RegionId = dto.RegionId.Value;
+        }
     }
+
 }

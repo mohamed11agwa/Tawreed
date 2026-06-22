@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Tawreed.BLL.Contracts.Authentication;
 using Tawreed.BLL.Services.AuthService;
 

@@ -43,8 +43,14 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
+
+
+        // ── Buyer ─────────────────────────────────────────────────────────
+        modelBuilder.Entity<Buyer>()
+            .HasKey(b => b.UserId);
+
 
 
 

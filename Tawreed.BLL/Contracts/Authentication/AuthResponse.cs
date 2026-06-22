@@ -2,7 +2,7 @@
 
 public record AuthResponse(
     Guid Id,
-    string? Eamil,
+    string? Email,
     string FullName,
     string Token,
     int ExpiresIn,
