@@ -15,7 +15,6 @@ namespace Tawreed.BLL.Extensions.MappingExtensions
             Name = product.Name,
             Description = product.Description ?? "no description available",
             Unit = product.Unit.ToString(),
-            CategoryId = product.CategoryId,
             CategoryName = product.Category?.Name.ToString() ?? string.Empty,
         };
 
@@ -28,7 +27,6 @@ namespace Tawreed.BLL.Extensions.MappingExtensions
             Id = Guid.NewGuid(),
             Name = dto.Name.Trim(),
             Description = dto.Description.Trim() ?? "no description available",
-            Unit = dto.Unit,
             CategoryId = dto.CategoryId,
         };
 
@@ -37,7 +35,6 @@ namespace Tawreed.BLL.Extensions.MappingExtensions
         {
             product.Name = dto.Name.Trim()??product.Name;
             product.Description = dto.Description.Trim() ?? product.Description??"no description available";
-            product.Unit = dto.Unit ?? product.Unit;
             product.CategoryId = dto.CategoryId;
         }
         // Patch DTO → existing Model (only non-null fields)
@@ -45,7 +42,6 @@ namespace Tawreed.BLL.Extensions.MappingExtensions
         {
             if (dto.Name is not null) product.Name = dto.Name.Trim();
             if (dto.Description is not null) product.Description = dto.Description.Trim();
-            if (dto.Unit is not null) product.Unit = dto.Unit.Value;
             if (dto.CategoryId is not null) product.CategoryId = dto.CategoryId.Value;
         }
     }

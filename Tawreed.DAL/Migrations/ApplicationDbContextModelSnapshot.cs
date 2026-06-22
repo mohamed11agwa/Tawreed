@@ -22,19 +22,19 @@ namespace Tawreed.DAL.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("ApplicationUserBusinessType", b =>
+            modelBuilder.Entity("CategorySupplier", b =>
                 {
-                    b.Property<Guid>("BusinessTypesId")
+                    b.Property<Guid>("CategoriesId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("UsersId")
+                    b.Property<Guid>("SuppliersUserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("BusinessTypesId", "UsersId");
+                    b.HasKey("CategoriesId", "SuppliersUserId");
 
-                    b.HasIndex("UsersId");
+                    b.HasIndex("SuppliersUserId");
 
-                    b.ToTable("UserBusinessTypes", (string)null);
+                    b.ToTable("CategorySupplier");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
@@ -168,21 +168,6 @@ namespace Tawreed.DAL.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("RegionSupplier", b =>
-                {
-                    b.Property<Guid>("RegionsId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("SuppliersUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("RegionsId", "SuppliersUserId");
-
-                    b.HasIndex("SuppliersUserId");
-
-                    b.ToTable("SupplierRegions", (string)null);
-                });
-
             modelBuilder.Entity("Tawreed.DAL.Models.ApplicationUser", b =>
                 {
                     b.Property<Guid>("Id")
@@ -191,6 +176,10 @@ namespace Tawreed.DAL.Migrations
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
+
+                    b.Property<string>("AvatarUrl")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -211,7 +200,7 @@ namespace Tawreed.DAL.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<bool>("IsActive")
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<DateTime?>("LastLoginAt")
@@ -245,7 +234,15 @@ namespace Tawreed.DAL.Migrations
                         .HasMaxLength(2)
                         .HasColumnType("nvarchar(2)");
 
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("TwoFactorEnabled")
@@ -271,28 +268,12 @@ namespace Tawreed.DAL.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("Tawreed.DAL.Models.BusinessType", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("BusinessTypes");
-                });
-
             modelBuilder.Entity("Tawreed.DAL.Models.Buyer", b =>
                 {
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Address")
-                        .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
@@ -300,6 +281,11 @@ namespace Tawreed.DAL.Migrations
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("BusinessType")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -310,12 +296,18 @@ namespace Tawreed.DAL.Migrations
                     b.Property<decimal?>("Longitude")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<Guid>("RegionId")
+                    b.Property<decimal>("RatingAvg")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<Guid?>("RegionId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("TaxNumber")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("UserId");
 
@@ -330,13 +322,82 @@ namespace Tawreed.DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("IconUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid?>("ParentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("SortOrder")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("Id");
 
+                    b.HasIndex("ParentId");
+
                     b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("Tawreed.DAL.Models.Delivery", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeliveredAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("GroupOrderId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("InvoiceId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("ScheduledAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ShippingAddress")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("SupplierId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GroupOrderId");
+
+                    b.HasIndex("InvoiceId");
+
+                    b.HasIndex("SupplierId");
+
+                    b.ToTable("Deliveries");
                 });
 
             modelBuilder.Entity("Tawreed.DAL.Models.GroupOrder", b =>
@@ -344,6 +405,12 @@ namespace Tawreed.DAL.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("ClosedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<Guid>("CreatorId")
                         .HasColumnType("uniqueidentifier");
@@ -354,17 +421,31 @@ namespace Tawreed.DAL.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OrderNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<Guid>("RegionId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("Status")
+                    b.Property<string>("Status")
+                        .IsRequired()
                         .HasMaxLength(20)
-                        .HasColumnType("int");
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<Guid?>("SupplierId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -372,7 +453,47 @@ namespace Tawreed.DAL.Migrations
 
                     b.HasIndex("RegionId");
 
+                    b.HasIndex("SupplierId");
+
                     b.ToTable("GroupOrders");
+                });
+
+            modelBuilder.Entity("Tawreed.DAL.Models.GroupOrderItem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("GroupOrderId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("SupplierProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("TargetQty")
+                        .HasColumnType("int");
+
+                    b.Property<decimal?>("UnitPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GroupOrderId");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("SupplierProductId");
+
+                    b.ToTable("groupOrderItems");
                 });
 
             modelBuilder.Entity("Tawreed.DAL.Models.GroupOrderParticipant", b =>
@@ -384,14 +505,18 @@ namespace Tawreed.DAL.Migrations
                     b.Property<Guid>("BuyerId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime?>("CancelledAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<Guid>("GroupOrderId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("JoinedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -400,6 +525,66 @@ namespace Tawreed.DAL.Migrations
                     b.HasIndex("GroupOrderId");
 
                     b.ToTable("GroupOrderParticipants");
+                });
+
+            modelBuilder.Entity("Tawreed.DAL.Models.Invoice", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("BuyerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("DeliveryFee")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("DiscountAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<Guid>("GroupOrderId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("InvoiceNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("IssuedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("PaidAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("ParticipantId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("PaymentMethod")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PaymentStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ShippingAddress")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Subtotal")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("Total")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BuyerId");
+
+                    b.HasIndex("GroupOrderId");
+
+                    b.HasIndex("ParticipantId");
+
+                    b.ToTable("Invoices");
                 });
 
             modelBuilder.Entity("Tawreed.DAL.Models.Notification", b =>
@@ -411,17 +596,26 @@ namespace Tawreed.DAL.Migrations
                     b.Property<string>("Body")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<Guid>("GroupOrderId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<int>("Type")
-                        .HasMaxLength(30)
+                        .HasMaxLength(50)
                         .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -435,14 +629,75 @@ namespace Tawreed.DAL.Migrations
                     b.ToTable("Notifications");
                 });
 
+            modelBuilder.Entity("Tawreed.DAL.Models.ParticipantItem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal?>("FinalUnitPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<Guid>("GroupOrderItemId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal?>("LineTotal")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<Guid>("ParticipantId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("UnitPriceAtJoin")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GroupOrderItemId");
+
+                    b.HasIndex("ParticipantId");
+
+                    b.ToTable("participantItems");
+                });
+
+            modelBuilder.Entity("Tawreed.DAL.Models.PricingTier", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int?>("MaxQty")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MinQty")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("SupplierProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("UnitPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SupplierProductId");
+
+                    b.ToTable("PricingTiers");
+                });
+
             modelBuilder.Entity("Tawreed.DAL.Models.Product", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("CategoryId")
+                    b.Property<Guid?>("CategoryId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -451,15 +706,45 @@ namespace Tawreed.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Unit")
-                        .HasMaxLength(20)
-                        .HasColumnType("int");
+                    b.Property<Guid?>("UnitId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
 
+                    b.HasIndex("UnitId");
+
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("Tawreed.DAL.Models.ProductImage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsCover")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("SortOrder")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("SupplierProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SupplierProductId");
+
+                    b.ToTable("ProductImages");
                 });
 
             modelBuilder.Entity("Tawreed.DAL.Models.Region", b =>
@@ -479,10 +764,19 @@ namespace Tawreed.DAL.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<Guid?>("ParentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ParentId");
 
                     b.ToTable("Regions");
                 });
@@ -492,12 +786,17 @@ namespace Tawreed.DAL.Migrations
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime?>("ApprovedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("CommercialRegister")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                    b.Property<Guid?>("ApprovedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ApproverId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("CompanyName")
                         .IsRequired()
@@ -507,50 +806,126 @@ namespace Tawreed.DAL.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("IsApproved")
+                        .HasColumnType("bit");
+
+                    b.Property<decimal>("RatingAvg")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<Guid>("RegionId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("TaxNumber")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("UserId");
+
+                    b.HasIndex("ApproverId");
+
+                    b.HasIndex("RegionId");
 
                     b.ToTable("Suppliers");
                 });
 
-            modelBuilder.Entity("Tawreed.DAL.Models.SupplierProduct", b =>
+            modelBuilder.Entity("Tawreed.DAL.Models.SupplierApprovalLogs", b =>
                 {
-                    b.Property<Guid>("SupplierId")
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("ProductId")
+                    b.Property<string>("Action")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Reason")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("SupplierId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SupplierId");
+
+                    b.ToTable("supplierApprovalLogs");
+                });
+
+            modelBuilder.Entity("Tawreed.DAL.Models.SupplierProduct", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("BasePrice")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<Guid>("Id")
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("ProductId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<decimal?>("StockQuantity")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<int>("StockQuantity")
+                        .HasColumnType("int");
 
-                    b.HasKey("SupplierId", "ProductId");
+                    b.Property<Guid>("SupplierId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("ProductId");
+
+                    b.HasIndex("SupplierId");
 
                     b.ToTable("SupplierProducts");
                 });
 
-            modelBuilder.Entity("ApplicationUserBusinessType", b =>
+            modelBuilder.Entity("Tawreed.DAL.Models.Unit", b =>
                 {
-                    b.HasOne("Tawreed.DAL.Models.BusinessType", null)
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Symbol")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Units");
+                });
+
+            modelBuilder.Entity("CategorySupplier", b =>
+                {
+                    b.HasOne("Tawreed.DAL.Models.Category", null)
                         .WithMany()
-                        .HasForeignKey("BusinessTypesId")
+                        .HasForeignKey("CategoriesId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Tawreed.DAL.Models.ApplicationUser", null)
+                    b.HasOne("Tawreed.DAL.Models.Supplier", null)
                         .WithMany()
-                        .HasForeignKey("UsersId")
+                        .HasForeignKey("SuppliersUserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
@@ -606,19 +981,41 @@ namespace Tawreed.DAL.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("RegionSupplier", b =>
+            modelBuilder.Entity("Tawreed.DAL.Models.ApplicationUser", b =>
                 {
-                    b.HasOne("Tawreed.DAL.Models.Region", null)
-                        .WithMany()
-                        .HasForeignKey("RegionsId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                    b.OwnsMany("Tawreed.DAL.Models.RefreshToken", "RefreshTokens", b1 =>
+                        {
+                            b1.Property<Guid>("UserId")
+                                .HasColumnType("uniqueidentifier");
 
-                    b.HasOne("Tawreed.DAL.Models.Supplier", null)
-                        .WithMany()
-                        .HasForeignKey("SuppliersUserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                            b1.Property<int>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("int");
+
+                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<int>("Id"));
+
+                            b1.Property<DateTime>("CreatedOn")
+                                .HasColumnType("datetime2");
+
+                            b1.Property<DateTime>("ExpiresOn")
+                                .HasColumnType("datetime2");
+
+                            b1.Property<DateTime?>("RevokedOn")
+                                .HasColumnType("datetime2");
+
+                            b1.Property<string>("Token")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("UserId", "Id");
+
+                            b1.ToTable("RefreshTokens", (string)null);
+
+                            b1.WithOwner()
+                                .HasForeignKey("UserId");
+                        });
+
+                    b.Navigation("RefreshTokens");
                 });
 
             modelBuilder.Entity("Tawreed.DAL.Models.ApplicationUser", b =>
@@ -662,9 +1059,7 @@ namespace Tawreed.DAL.Migrations
                 {
                     b.HasOne("Tawreed.DAL.Models.Region", "Region")
                         .WithMany("Buyers")
-                        .HasForeignKey("RegionId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .HasForeignKey("RegionId");
 
                     b.HasOne("Tawreed.DAL.Models.ApplicationUser", "User")
                         .WithOne("Buyer")
@@ -675,6 +1070,43 @@ namespace Tawreed.DAL.Migrations
                     b.Navigation("Region");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Tawreed.DAL.Models.Category", b =>
+                {
+                    b.HasOne("Tawreed.DAL.Models.Category", "ParentCategory")
+                        .WithMany("ChildrenCategories")
+                        .HasForeignKey("ParentId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("ParentCategory");
+                });
+
+            modelBuilder.Entity("Tawreed.DAL.Models.Delivery", b =>
+                {
+                    b.HasOne("Tawreed.DAL.Models.GroupOrder", "GroupOrder")
+                        .WithMany()
+                        .HasForeignKey("GroupOrderId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Tawreed.DAL.Models.Invoice", "Invoice")
+                        .WithMany()
+                        .HasForeignKey("InvoiceId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Tawreed.DAL.Models.Supplier", "Supplier")
+                        .WithMany()
+                        .HasForeignKey("SupplierId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("GroupOrder");
+
+                    b.Navigation("Invoice");
+
+                    b.Navigation("Supplier");
                 });
 
             modelBuilder.Entity("Tawreed.DAL.Models.GroupOrder", b =>
@@ -691,9 +1123,40 @@ namespace Tawreed.DAL.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("Tawreed.DAL.Models.Supplier", "Supplier")
+                        .WithMany("GroupOrders")
+                        .HasForeignKey("SupplierId");
+
                     b.Navigation("Buyer");
 
                     b.Navigation("Region");
+
+                    b.Navigation("Supplier");
+                });
+
+            modelBuilder.Entity("Tawreed.DAL.Models.GroupOrderItem", b =>
+                {
+                    b.HasOne("Tawreed.DAL.Models.GroupOrder", "GroupOrder")
+                        .WithMany("Items")
+                        .HasForeignKey("GroupOrderId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Tawreed.DAL.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Tawreed.DAL.Models.SupplierProduct", "SupplierProduct")
+                        .WithMany()
+                        .HasForeignKey("SupplierProductId");
+
+                    b.Navigation("GroupOrder");
+
+                    b.Navigation("Product");
+
+                    b.Navigation("SupplierProduct");
                 });
 
             modelBuilder.Entity("Tawreed.DAL.Models.GroupOrderParticipant", b =>
@@ -705,7 +1168,7 @@ namespace Tawreed.DAL.Migrations
                         .IsRequired();
 
                     b.HasOne("Tawreed.DAL.Models.GroupOrder", "GroupOrder")
-                        .WithMany("Participations")
+                        .WithMany("Participants")
                         .HasForeignKey("GroupOrderId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -713,6 +1176,33 @@ namespace Tawreed.DAL.Migrations
                     b.Navigation("Buyer");
 
                     b.Navigation("GroupOrder");
+                });
+
+            modelBuilder.Entity("Tawreed.DAL.Models.Invoice", b =>
+                {
+                    b.HasOne("Tawreed.DAL.Models.Buyer", "Buyer")
+                        .WithMany()
+                        .HasForeignKey("BuyerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Tawreed.DAL.Models.GroupOrder", "GroupOrder")
+                        .WithMany()
+                        .HasForeignKey("GroupOrderId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Tawreed.DAL.Models.GroupOrderParticipant", "Participant")
+                        .WithMany()
+                        .HasForeignKey("ParticipantId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Buyer");
+
+                    b.Navigation("GroupOrder");
+
+                    b.Navigation("Participant");
                 });
 
             modelBuilder.Entity("Tawreed.DAL.Models.Notification", b =>
@@ -734,26 +1224,104 @@ namespace Tawreed.DAL.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Tawreed.DAL.Models.ParticipantItem", b =>
+                {
+                    b.HasOne("Tawreed.DAL.Models.GroupOrderItem", "GroupOrderItem")
+                        .WithMany("ParticipantItems")
+                        .HasForeignKey("GroupOrderItemId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Tawreed.DAL.Models.GroupOrderParticipant", "Participant")
+                        .WithMany("Items")
+                        .HasForeignKey("ParticipantId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("GroupOrderItem");
+
+                    b.Navigation("Participant");
+                });
+
+            modelBuilder.Entity("Tawreed.DAL.Models.PricingTier", b =>
+                {
+                    b.HasOne("Tawreed.DAL.Models.SupplierProduct", "SupplierProduct")
+                        .WithMany("PricingTiers")
+                        .HasForeignKey("SupplierProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("SupplierProduct");
+                });
+
             modelBuilder.Entity("Tawreed.DAL.Models.Product", b =>
                 {
                     b.HasOne("Tawreed.DAL.Models.Category", "Category")
                         .WithMany("Products")
-                        .HasForeignKey("CategoryId")
+                        .HasForeignKey("CategoryId");
+
+                    b.HasOne("Tawreed.DAL.Models.Unit", "Unit")
+                        .WithMany("Products")
+                        .HasForeignKey("UnitId");
+
+                    b.Navigation("Category");
+
+                    b.Navigation("Unit");
+                });
+
+            modelBuilder.Entity("Tawreed.DAL.Models.ProductImage", b =>
+                {
+                    b.HasOne("Tawreed.DAL.Models.SupplierProduct", "SupplierProduct")
+                        .WithMany("Images")
+                        .HasForeignKey("SupplierProductId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("Category");
+                    b.Navigation("SupplierProduct");
+                });
+
+            modelBuilder.Entity("Tawreed.DAL.Models.Region", b =>
+                {
+                    b.HasOne("Tawreed.DAL.Models.Region", "ParentRegion")
+                        .WithMany("ChildrenRegions")
+                        .HasForeignKey("ParentId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("ParentRegion");
                 });
 
             modelBuilder.Entity("Tawreed.DAL.Models.Supplier", b =>
                 {
+                    b.HasOne("Tawreed.DAL.Models.ApplicationUser", "Approver")
+                        .WithMany()
+                        .HasForeignKey("ApproverId");
+
+                    b.HasOne("Tawreed.DAL.Models.Region", "Region")
+                        .WithMany("Suppliers")
+                        .HasForeignKey("RegionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("Tawreed.DAL.Models.ApplicationUser", "User")
                         .WithOne("Supplier")
                         .HasForeignKey("Tawreed.DAL.Models.Supplier", "UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.Navigation("Approver");
+
+                    b.Navigation("Region");
+
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Tawreed.DAL.Models.SupplierApprovalLogs", b =>
+                {
+                    b.HasOne("Tawreed.DAL.Models.Supplier", "Supplier")
+                        .WithMany()
+                        .HasForeignKey("SupplierId");
+
+                    b.Navigation("Supplier");
                 });
 
             modelBuilder.Entity("Tawreed.DAL.Models.SupplierProduct", b =>
@@ -793,12 +1361,26 @@ namespace Tawreed.DAL.Migrations
 
             modelBuilder.Entity("Tawreed.DAL.Models.Category", b =>
                 {
+                    b.Navigation("ChildrenCategories");
+
                     b.Navigation("Products");
                 });
 
             modelBuilder.Entity("Tawreed.DAL.Models.GroupOrder", b =>
                 {
-                    b.Navigation("Participations");
+                    b.Navigation("Items");
+
+                    b.Navigation("Participants");
+                });
+
+            modelBuilder.Entity("Tawreed.DAL.Models.GroupOrderItem", b =>
+                {
+                    b.Navigation("ParticipantItems");
+                });
+
+            modelBuilder.Entity("Tawreed.DAL.Models.GroupOrderParticipant", b =>
+                {
+                    b.Navigation("Items");
                 });
 
             modelBuilder.Entity("Tawreed.DAL.Models.Product", b =>
@@ -810,12 +1392,30 @@ namespace Tawreed.DAL.Migrations
                 {
                     b.Navigation("Buyers");
 
+                    b.Navigation("ChildrenRegions");
+
                     b.Navigation("GroupOrders");
+
+                    b.Navigation("Suppliers");
                 });
 
             modelBuilder.Entity("Tawreed.DAL.Models.Supplier", b =>
                 {
+                    b.Navigation("GroupOrders");
+
                     b.Navigation("SupplierProducts");
+                });
+
+            modelBuilder.Entity("Tawreed.DAL.Models.SupplierProduct", b =>
+                {
+                    b.Navigation("Images");
+
+                    b.Navigation("PricingTiers");
+                });
+
+            modelBuilder.Entity("Tawreed.DAL.Models.Unit", b =>
+                {
+                    b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
         }

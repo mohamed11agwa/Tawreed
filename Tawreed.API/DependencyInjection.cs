@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using SharpGrip.FluentValidation.AutoValidation.Mvc.Extensions;
 using System.Reflection;
@@ -63,31 +64,25 @@ namespace Tawreed.API
 
         private static IServiceCollection AddFluentValidationConfig(this IServiceCollection services)
         {
-            var assemblies = new[]
-                {
-                    Assembly.GetExecutingAssembly(),                  // الـ API
-                    typeof(RegisterSupplierRequestValidator).Assembly,
-                    typeof(RegisterBuyerRequestValidator).Assembly  ,
-                    typeof(LoginRequestValidator).Assembly  // الـ BLL
-                };
             services.AddFluentValidationAutoValidation()
-                //.AddValidatorsFromAssemblyContaining<RegisterBuyerRequestValidator>();
-                .AddValidatorsFromAssemblies(assemblies);
-                //.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+                .AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
             return services;
         }
 
 
         private static IServiceCollection AddAuthConfig(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddSingleton<IJwtProvider, JwtProvider>();
+
             services.AddIdentity<ApplicationUser, IdentityRole<Guid>>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-
 
             services.AddOptions<JwtOptions>()
                 .Bind(configuration.GetSection(JwtOptions.SectionName))
                 .ValidateDataAnnotations()
                 .ValidateOnStart();
+
+            var jwtOptions = configuration.GetSection(JwtOptions.SectionName).Get<JwtOptions>();
 
             var jwtOptions = configuration.GetSection(JwtOptions.SectionName).Get<JwtOptions>();
             services.AddAuthentication(options =>

@@ -15,7 +15,6 @@ namespace Tawreed.API.Controllers
 
         // GET api/products
         [HttpGet]
-        
         public async Task<IActionResult> GetAll()
         {
             var products = await _service.GetAllAsync();
@@ -75,6 +74,7 @@ namespace Tawreed.API.Controllers
             var deleted = await _service.DeleteAsync(id);
             return deleted ? NoContent() : NotFound();
         }
+
         // PATCH api/products/{id}
         [HttpPatch("{id:guid}")]
         public async Task<IActionResult> Patch(Guid id, [FromBody] PatchProductDto dto)

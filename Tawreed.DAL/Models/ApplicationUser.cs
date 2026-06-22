@@ -3,31 +3,31 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Tawreed.DAL.Models;
 
-public class ApplicationUser : IdentityUser<Guid>
+public sealed class ApplicationUser : IdentityUser<Guid>
 {
     [Required]
     [MaxLength(200)]
     public string FullName { get; set; } = string.Empty;
 
+    public string Role { get; set; } = null!;
+    public string Status { get; set; } = null!;
+    public DateTime? LastLoginAt { get; set; }
     [Required]
     [MaxLength(2)]
     public string PreferredLang { get; set; } = "ar";
 
-    public bool IsActive { get; set; } = true;
+    [MaxLength(500)]
+    public string? AvatarUrl { get; set; }
 
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-
     public DateTime? UpdatedAt { get; set; }
-
-    public DateTime? LastLoginAt { get; set; }
+    public bool IsDeleted { get; set; }
 
 
     // Navigation
     public Buyer? Buyer { get; set; }
     public Supplier? Supplier { get; set; }
 
-    public ICollection<BusinessType> BusinessTypes { get; set; }= new HashSet<BusinessType>();
     public ICollection<Notification> Notifications { get; set; } = new HashSet<Notification>();
-
-    public List<RefreshToken> RefreshTokens { get; set; } = [];
+    public ICollection<RefreshToken> RefreshTokens { get; set; } = new HashSet<RefreshToken>();
 }

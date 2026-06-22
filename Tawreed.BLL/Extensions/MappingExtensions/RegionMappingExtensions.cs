@@ -28,7 +28,6 @@ namespace Tawreed.BLL.Extensions.MappingExtensions
             Name = dto.Name.Trim(),
             IsActive = dto.IsActive,
             CreatedAt = DateTime.UtcNow,
-            UpdatedAt = DateTime.UtcNow,
         };
 
         // Update DTO → existing Model

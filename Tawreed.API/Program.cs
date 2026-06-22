@@ -1,19 +1,5 @@
-using FluentValidation;
 using Tawreed.API.Extensions;
 using Tawreed.API.Registration;
-using Tawreed.API.Validators;
-using Tawreed.BLL.Dtos.Category;
-using Tawreed.BLL.Dtos.Product;
-using Tawreed.BLL.Dtos.Reigon;
-using Tawreed.BLL.Services.BuyerService;
-using Tawreed.BLL.Services.CategoryService;
-using Tawreed.BLL.Services.ProductService;
-using Tawreed.BLL.Services.RegionService;
-using Tawreed.DAL.Repository.CategoryRepo;
-using Tawreed.DAL.Repository.ProductRepo;
-using Tawreed.DAL.Repository.RegionRepo;
-using Tawreed.DAL.Repository.Supplier_Repo;
-
 namespace Tawreed.API
 {
     public class Program

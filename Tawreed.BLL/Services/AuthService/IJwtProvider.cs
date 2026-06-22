@@ -4,6 +4,6 @@ namespace Tawreed.BLL.Services.AuthService;
 
 public interface IJwtProvider
 {
-    (string token, int expiresIn) GenerateToken(ApplicationUser user, IEnumerable<string> roles);
-    string? validateToken(string token);
+    (string token, int expiresIn) GenerateToken(ApplicationUser user);
+    string? ValidateToken(string token);
 }

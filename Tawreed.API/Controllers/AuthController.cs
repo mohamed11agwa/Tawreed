@@ -5,34 +5,50 @@ using Tawreed.BLL.Services.AuthService;
 
 namespace Tawreed.API.Controllers
 {
-    [Route("api/auth")]
     [ApiController]
-    public class AuthController(IAuthService authService, IOptions<JwtOptions> jwtOptions) : ControllerBase
+    [Route("api/[controller]")]
+    public class AuthController(IAuthService authService) : ControllerBase
     {
         private readonly IAuthService _authService = authService;
-        private readonly JwtOptions _jwtOptions = jwtOptions.Value;
+        
 
-
-        // POST api/auth/login
-        [HttpPost("login")]
-        public async Task<IActionResult> Login(
-            [FromBody] LoginRequest request,
-            CancellationToken cancellationToken)
+        [HttpPost("")]
+        public async Task<IActionResult> Login(LoginRequest request, CancellationToken cancellationToken)
         {
-    
-            var response = await _authService.GetTokenAsync(request.Email, request.Password, cancellationToken);
+            var authResult = await _authService.GetTokenAsync(request.Email, request.Password, cancellationToken);
 
-            if (response is null)
-                return Unauthorized("Invalid credentials or account is pending approval.");
-
-            return Ok(response);
+            //return authResult is null ?
+            //     BadRequest("Invalid Email Or Password.") 
+            //     : Ok(authResult);
+            return authResult.IsSuccess ? Ok(authResult.Value) : 
+                Problem(statusCode: StatusCodes.Status400BadRequest, title: authResult.Error.Code, detail:authResult.Error.Description);
         }
+
+        [HttpPost("refresh")]
+        public async Task<IActionResult> Refresh(RefreshTokenRequest request, CancellationToken cancellationToken)
+        {
+            var authResult = await _authService.GetRefreshTokenAsync(request.Token, request.RefreshToken, cancellationToken);
+           
+            if (authResult is null)
+                return BadRequest("Invalid Token.");
+            return Ok(authResult);
+        }
+
+
+        [HttpPost("revoke-refresh-token")]
+        public async Task<IActionResult> RevokeRefreshToken([FromBody] RefreshTokenRequest request, CancellationToken cancellationToken)
+        {
+            var isRevoked = await _authService.RevokeRefreshTokenAsync(request.Token, request.RefreshToken, cancellationToken);
+            if (isRevoked)
+                return Ok();
+            else
+                return BadRequest("Operation Failed.");
+        }
+
 
         // POST api/auth/register/buyer
         [HttpPost("register/buyer")]
-        public async Task<IActionResult> RegisterBuyer(
-            [FromBody] RegisterBuyerRequest request,
-            CancellationToken cancellationToken)
+        public async Task<IActionResult> RegisterBuyer([FromBody] RegisterBuyerRequest request, CancellationToken cancellationToken)
         {
             var response = await _authService.RegisterBuyerAsync(request, cancellationToken);
 
@@ -42,30 +58,24 @@ namespace Tawreed.API.Controllers
             return CreatedAtAction(nameof(Login), response);
         }
 
+
         // POST api/auth/register/supplier
         [HttpPost("register/supplier")]
         public async Task<IActionResult> RegisterSupplier([FromBody] RegisterSupplierRequest request, CancellationToken cancellationToken)
         {
-            var response = await _authService.RegisterSupplierAsync(request, cancellationToken);
+            var result = await _authService.RegisterSupplierAsync(request, cancellationToken);
 
-            //if (response is null)
-            //    return Conflict("Email is already registered.");
-
-            //// 202 Accepted — account created but pending admin approval
-            //return Accepted(new { message = "Registration successful. Your account is pending admin approval.", userId = response.Id });
-            return request is null ?
-                BadRequest("Email IS Duplicated") : Ok(response);
+            //return result.IsSuccess
+            //    ? Ok("Registration successful. Your account is pending admin approval.")
+            //    : Conflict("Email is already registered.");
+            return result.IsSuccess ? Ok(result.Value) :
+              Problem(statusCode: StatusCodes.Status409Conflict, title: result.Error.Code, detail: result.Error.Description);
         }
+        //if (response is null)
+        //    return Conflict("Email is already registered.");
 
-
-        [HttpPost("refresh")]
-        public async Task<ActionResult> Refresh(RefreshTokenRequest request, CancellationToken cancellationToken)
-        {
-            var authresult = await _authService.GetRefreshTokenAsync(request.token, request.refreshToken, cancellationToken);
-
-            if (authresult is null)
-                return BadRequest("Invalid Token");
-            return Ok(authresult);
-        }
+        //// 202 Accepted — account created but pending admin approval
+        //return Accepted(new { message = "Registration successful. Your account is pending admin approval.", userId = response.Id });
+    
     }
 }

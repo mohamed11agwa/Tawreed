@@ -1,38 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
-using Tawreed.DAL.Enums;
+﻿using System.ComponentModel.DataAnnotations;
+using Tawreed.DAL.Common;
 
-namespace Tawreed.DAL.Models
+namespace Tawreed.DAL.Models;
+
+public class GroupOrder : BaseAuditableEntity
 {
-    public class GroupOrder
-    {
-        public Guid Id { get; set; }
+
+    [Required]
+    [MaxLength(200)]
+    public string Title { get; set; } = null!;
+
+    public string? Description { get; set; }
+    public string OrderNumber { get; set; } = null!;
+    public string? Notes { get; set; }
+
+    [Required]
+    [MaxLength(20)]
+    public string Status { get; set; } = string.Empty;
+    public DateTime DeadlineAt { get; set; }
+    public DateTime? ClosedAt { get; set; }
 
 
-        [Required]
-        [MaxLength(200)]
-        public string Title { get; set; } = null!;
+    public Guid CreatorId { get; set; }
+    public Buyer Buyer { get; set; } = default!;
 
-        public string? Description { get; set; }
+    public Guid RegionId { get; set; }
+    public Region Region { get; set; } = default!;
 
-        public DateTime DeadlineAt { get; set; }
-
-        [Required]
-        [MaxLength(20)]
-        public GroupOrderStatus Status { get; set; } = GroupOrderStatus.Open;
-
-
-
-
-        public Guid CreatorId { get; set; }
-        public Buyer Buyer { get; set; } = default!;
-
-        public Guid RegionId { get; set; }
-        public Region Region { get; set; } = default!;
-        public ICollection<GroupOrderParticipant> Participations { get; set; } = [];
-
-    }
+    public Guid? SupplierId { get; set; }
+    public Supplier Supplier { get; set; } = default!;
+    public ICollection<GroupOrderItem> Items { get; set; } = new HashSet<GroupOrderItem>();
+    public ICollection<GroupOrderParticipant> Participants { get; set; } = new HashSet<GroupOrderParticipant>();
 }
