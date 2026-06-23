@@ -6,6 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using SharpGrip.FluentValidation.AutoValidation.Mvc.Extensions;
 using System.Reflection;
 using System.Text;
+using Tawreed.BLL.Contracts.Authentication;
 using Tawreed.BLL.Services.AuthService;
 using Tawreed.BLL.Services.CategoryService;
 using Tawreed.BLL.Services.GroupOrderParticipants;
@@ -63,7 +64,8 @@ namespace Tawreed.API
         private static IServiceCollection AddFluentValidationConfig(this IServiceCollection services)
         {
             services.AddFluentValidationAutoValidation()
-                .AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+                .AddValidatorsFromAssembly(Assembly.GetExecutingAssembly())
+                .AddValidatorsFromAssemblyContaining<RegisterBuyerRequestValidator>();
             return services;
         }
 
@@ -72,7 +74,7 @@ namespace Tawreed.API
         {
             services.AddSingleton<IJwtProvider, JwtProvider>();
 
-            services.AddIdentity<ApplicationUser, IdentityRole<Guid>>()
+            services.AddIdentity<ApplicationUser, ApplicationRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddOptions<JwtOptions>()

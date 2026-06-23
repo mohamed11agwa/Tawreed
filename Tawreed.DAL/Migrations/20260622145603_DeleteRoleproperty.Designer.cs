@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Tawreed.DAL.Data;
 
@@ -11,9 +12,11 @@ using Tawreed.DAL.Data;
 namespace Tawreed.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260622145603_DeleteRoleproperty")]
+    partial class DeleteRoleproperty
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -35,6 +38,34 @@ namespace Tawreed.DAL.Migrations
                     b.HasIndex("SuppliersUserId");
 
                     b.ToTable("CategorySupplier");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex")
+                        .HasFilter("[NormalizedName] IS NOT NULL");
+
+                    b.ToTable("AspNetRoles", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -59,302 +90,6 @@ namespace Tawreed.DAL.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetRoleClaims", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            ClaimType = "permissions",
-                            ClaimValue = "users:read",
-                            RoleId = new Guid("3cfc4e5b-70f7-4437-a09e-799859a119c8")
-                        },
-                        new
-                        {
-                            Id = 2,
-                            ClaimType = "permissions",
-                            ClaimValue = "users:suspend",
-                            RoleId = new Guid("3cfc4e5b-70f7-4437-a09e-799859a119c8")
-                        },
-                        new
-                        {
-                            Id = 3,
-                            ClaimType = "permissions",
-                            ClaimValue = "users:reactivate",
-                            RoleId = new Guid("3cfc4e5b-70f7-4437-a09e-799859a119c8")
-                        },
-                        new
-                        {
-                            Id = 4,
-                            ClaimType = "permissions",
-                            ClaimValue = "users:reset-password",
-                            RoleId = new Guid("3cfc4e5b-70f7-4437-a09e-799859a119c8")
-                        },
-                        new
-                        {
-                            Id = 5,
-                            ClaimType = "permissions",
-                            ClaimValue = "suppliers:read",
-                            RoleId = new Guid("3cfc4e5b-70f7-4437-a09e-799859a119c8")
-                        },
-                        new
-                        {
-                            Id = 6,
-                            ClaimType = "permissions",
-                            ClaimValue = "suppliers:approve",
-                            RoleId = new Guid("3cfc4e5b-70f7-4437-a09e-799859a119c8")
-                        },
-                        new
-                        {
-                            Id = 7,
-                            ClaimType = "permissions",
-                            ClaimValue = "suppliers:reject",
-                            RoleId = new Guid("3cfc4e5b-70f7-4437-a09e-799859a119c8")
-                        },
-                        new
-                        {
-                            Id = 8,
-                            ClaimType = "permissions",
-                            ClaimValue = "suppliers:suspend",
-                            RoleId = new Guid("3cfc4e5b-70f7-4437-a09e-799859a119c8")
-                        },
-                        new
-                        {
-                            Id = 9,
-                            ClaimType = "permissions",
-                            ClaimValue = "suppliers:reactivate",
-                            RoleId = new Guid("3cfc4e5b-70f7-4437-a09e-799859a119c8")
-                        },
-                        new
-                        {
-                            Id = 10,
-                            ClaimType = "permissions",
-                            ClaimValue = "orders:read",
-                            RoleId = new Guid("3cfc4e5b-70f7-4437-a09e-799859a119c8")
-                        },
-                        new
-                        {
-                            Id = 11,
-                            ClaimType = "permissions",
-                            ClaimValue = "orders:create",
-                            RoleId = new Guid("3cfc4e5b-70f7-4437-a09e-799859a119c8")
-                        },
-                        new
-                        {
-                            Id = 12,
-                            ClaimType = "permissions",
-                            ClaimValue = "orders:update",
-                            RoleId = new Guid("3cfc4e5b-70f7-4437-a09e-799859a119c8")
-                        },
-                        new
-                        {
-                            Id = 13,
-                            ClaimType = "permissions",
-                            ClaimValue = "orders:force-close",
-                            RoleId = new Guid("3cfc4e5b-70f7-4437-a09e-799859a119c8")
-                        },
-                        new
-                        {
-                            Id = 14,
-                            ClaimType = "permissions",
-                            ClaimValue = "orders:join",
-                            RoleId = new Guid("3cfc4e5b-70f7-4437-a09e-799859a119c8")
-                        },
-                        new
-                        {
-                            Id = 15,
-                            ClaimType = "permissions",
-                            ClaimValue = "orders:leave",
-                            RoleId = new Guid("3cfc4e5b-70f7-4437-a09e-799859a119c8")
-                        },
-                        new
-                        {
-                            Id = 16,
-                            ClaimType = "permissions",
-                            ClaimValue = "orders:accept",
-                            RoleId = new Guid("3cfc4e5b-70f7-4437-a09e-799859a119c8")
-                        },
-                        new
-                        {
-                            Id = 17,
-                            ClaimType = "permissions",
-                            ClaimValue = "orders:decline",
-                            RoleId = new Guid("3cfc4e5b-70f7-4437-a09e-799859a119c8")
-                        },
-                        new
-                        {
-                            Id = 18,
-                            ClaimType = "permissions",
-                            ClaimValue = "categories:read",
-                            RoleId = new Guid("3cfc4e5b-70f7-4437-a09e-799859a119c8")
-                        },
-                        new
-                        {
-                            Id = 19,
-                            ClaimType = "permissions",
-                            ClaimValue = "categories:create",
-                            RoleId = new Guid("3cfc4e5b-70f7-4437-a09e-799859a119c8")
-                        },
-                        new
-                        {
-                            Id = 20,
-                            ClaimType = "permissions",
-                            ClaimValue = "categories:update",
-                            RoleId = new Guid("3cfc4e5b-70f7-4437-a09e-799859a119c8")
-                        },
-                        new
-                        {
-                            Id = 21,
-                            ClaimType = "permissions",
-                            ClaimValue = "categories:activate",
-                            RoleId = new Guid("3cfc4e5b-70f7-4437-a09e-799859a119c8")
-                        },
-                        new
-                        {
-                            Id = 22,
-                            ClaimType = "permissions",
-                            ClaimValue = "categories:deactivate",
-                            RoleId = new Guid("3cfc4e5b-70f7-4437-a09e-799859a119c8")
-                        },
-                        new
-                        {
-                            Id = 23,
-                            ClaimType = "permissions",
-                            ClaimValue = "categories:delete",
-                            RoleId = new Guid("3cfc4e5b-70f7-4437-a09e-799859a119c8")
-                        },
-                        new
-                        {
-                            Id = 24,
-                            ClaimType = "permissions",
-                            ClaimValue = "regions:read",
-                            RoleId = new Guid("3cfc4e5b-70f7-4437-a09e-799859a119c8")
-                        },
-                        new
-                        {
-                            Id = 25,
-                            ClaimType = "permissions",
-                            ClaimValue = "regions:create",
-                            RoleId = new Guid("3cfc4e5b-70f7-4437-a09e-799859a119c8")
-                        },
-                        new
-                        {
-                            Id = 26,
-                            ClaimType = "permissions",
-                            ClaimValue = "regions:update",
-                            RoleId = new Guid("3cfc4e5b-70f7-4437-a09e-799859a119c8")
-                        },
-                        new
-                        {
-                            Id = 27,
-                            ClaimType = "permissions",
-                            ClaimValue = "regions:delete",
-                            RoleId = new Guid("3cfc4e5b-70f7-4437-a09e-799859a119c8")
-                        },
-                        new
-                        {
-                            Id = 28,
-                            ClaimType = "permissions",
-                            ClaimValue = "regions:toggle",
-                            RoleId = new Guid("3cfc4e5b-70f7-4437-a09e-799859a119c8")
-                        },
-                        new
-                        {
-                            Id = 29,
-                            ClaimType = "permissions",
-                            ClaimValue = "products:read",
-                            RoleId = new Guid("3cfc4e5b-70f7-4437-a09e-799859a119c8")
-                        },
-                        new
-                        {
-                            Id = 30,
-                            ClaimType = "permissions",
-                            ClaimValue = "products:create",
-                            RoleId = new Guid("3cfc4e5b-70f7-4437-a09e-799859a119c8")
-                        },
-                        new
-                        {
-                            Id = 31,
-                            ClaimType = "permissions",
-                            ClaimValue = "products:update",
-                            RoleId = new Guid("3cfc4e5b-70f7-4437-a09e-799859a119c8")
-                        },
-                        new
-                        {
-                            Id = 32,
-                            ClaimType = "permissions",
-                            ClaimValue = "products:delete",
-                            RoleId = new Guid("3cfc4e5b-70f7-4437-a09e-799859a119c8")
-                        },
-                        new
-                        {
-                            Id = 33,
-                            ClaimType = "permissions",
-                            ClaimValue = "products:manage-tiers",
-                            RoleId = new Guid("3cfc4e5b-70f7-4437-a09e-799859a119c8")
-                        },
-                        new
-                        {
-                            Id = 34,
-                            ClaimType = "permissions",
-                            ClaimValue = "deliveries:read",
-                            RoleId = new Guid("3cfc4e5b-70f7-4437-a09e-799859a119c8")
-                        },
-                        new
-                        {
-                            Id = 35,
-                            ClaimType = "permissions",
-                            ClaimValue = "deliveries:update-status",
-                            RoleId = new Guid("3cfc4e5b-70f7-4437-a09e-799859a119c8")
-                        },
-                        new
-                        {
-                            Id = 36,
-                            ClaimType = "permissions",
-                            ClaimValue = "group-orders:read",
-                            RoleId = new Guid("3cfc4e5b-70f7-4437-a09e-799859a119c8")
-                        },
-                        new
-                        {
-                            Id = 37,
-                            ClaimType = "permissions",
-                            ClaimValue = "group-orders:create",
-                            RoleId = new Guid("3cfc4e5b-70f7-4437-a09e-799859a119c8")
-                        },
-                        new
-                        {
-                            Id = 38,
-                            ClaimType = "permissions",
-                            ClaimValue = "group-orders:update-status",
-                            RoleId = new Guid("3cfc4e5b-70f7-4437-a09e-799859a119c8")
-                        },
-                        new
-                        {
-                            Id = 39,
-                            ClaimType = "permissions",
-                            ClaimValue = "group-orders:delete",
-                            RoleId = new Guid("3cfc4e5b-70f7-4437-a09e-799859a119c8")
-                        },
-                        new
-                        {
-                            Id = 40,
-                            ClaimType = "permissions",
-                            ClaimValue = "dashboard:admin",
-                            RoleId = new Guid("3cfc4e5b-70f7-4437-a09e-799859a119c8")
-                        },
-                        new
-                        {
-                            Id = 41,
-                            ClaimType = "permissions",
-                            ClaimValue = "dashboard:buyer",
-                            RoleId = new Guid("3cfc4e5b-70f7-4437-a09e-799859a119c8")
-                        },
-                        new
-                        {
-                            Id = 42,
-                            ClaimType = "permissions",
-                            ClaimValue = "dashboard:supplier",
-                            RoleId = new Guid("3cfc4e5b-70f7-4437-a09e-799859a119c8")
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
@@ -415,13 +150,6 @@ namespace Tawreed.DAL.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = new Guid("51fa1d98-0573-4c2f-a9c3-8c0f93cf91b6"),
-                            RoleId = new Guid("3cfc4e5b-70f7-4437-a09e-799859a119c8")
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
@@ -441,63 +169,6 @@ namespace Tawreed.DAL.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
-                });
-
-            modelBuilder.Entity("Tawreed.DAL.Models.ApplicationRole", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("NormalizedName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedName")
-                        .IsUnique()
-                        .HasDatabaseName("RoleNameIndex")
-                        .HasFilter("[NormalizedName] IS NOT NULL");
-
-                    b.ToTable("AspNetRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("3cfc4e5b-70f7-4437-a09e-799859a119c8"),
-                            ConcurrencyStamp = "a0fa979b-5117-49ef-86e4-db00aff6ed39",
-                            IsDeleted = false,
-                            Name = "Admin",
-                            NormalizedName = "ADMIN"
-                        },
-                        new
-                        {
-                            Id = new Guid("a18591e5-7617-4bbd-b83b-cad4fa3572bb"),
-                            ConcurrencyStamp = "106c609a-d895-43cc-bcd7-3976c49b38aa",
-                            IsDeleted = false,
-                            Name = "Buyer",
-                            NormalizedName = "BUYER"
-                        },
-                        new
-                        {
-                            Id = new Guid("5dc9280f-e17a-4c3c-b2f1-b7be3256c7c7"),
-                            ConcurrencyStamp = "d0463275-a8fc-4468-ab4e-e2a10e9fa47f",
-                            IsDeleted = false,
-                            Name = "Supplier",
-                            NormalizedName = "SUPPLIER"
-                        });
                 });
 
             modelBuilder.Entity("Tawreed.DAL.Models.ApplicationUser", b =>
@@ -594,29 +265,6 @@ namespace Tawreed.DAL.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("51fa1d98-0573-4c2f-a9c3-8c0f93cf91b6"),
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "712e8e30-2da9-4603-913d-652c07919cab",
-                            CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Email = "admin@tawreed.com",
-                            EmailConfirmed = true,
-                            FullName = "Admin",
-                            IsDeleted = false,
-                            LockoutEnabled = false,
-                            NormalizedEmail = "ADMIN@TAWREED.COM",
-                            NormalizedUserName = "ADMIN@TAWREED.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEPQRee3V73RVPNYD8BALbNHBr4xqPMVG+4GumW3asmZR8abwWUd7AJG8PQ1mnQs/uw==",
-                            PhoneNumberConfirmed = false,
-                            PreferredLang = "en",
-                            SecurityStamp = "C7EDC5BC-70A0-47C6-8F6D-5D0C9C57124C",
-                            Status = "Active",
-                            TwoFactorEnabled = false,
-                            UserName = "admin@tawreed.com"
-                        });
                 });
 
             modelBuilder.Entity("Tawreed.DAL.Models.Buyer", b =>
@@ -1283,7 +931,7 @@ namespace Tawreed.DAL.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
-                    b.HasOne("Tawreed.DAL.Models.ApplicationRole", null)
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1310,7 +958,7 @@ namespace Tawreed.DAL.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
                 {
-                    b.HasOne("Tawreed.DAL.Models.ApplicationRole", null)
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)

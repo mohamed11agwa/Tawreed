@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using Tawreed.BLL.Constants;
+using Tawreed.DAL.Consts;
 
 namespace Tawreed.BLL.Contracts.Authentication;
 

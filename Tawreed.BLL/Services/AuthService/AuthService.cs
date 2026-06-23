@@ -2,10 +2,10 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
-using Tawreed.BLL.Constants;
 using Tawreed.BLL.Contracts.Authentication;
 using Tawreed.BLL.Shared;
 using Tawreed.BLL.Shared.Errors;
+using Tawreed.DAL.Consts;
 using Tawreed.DAL.Data;
 using Tawreed.DAL.Models;
 
@@ -120,6 +120,8 @@ public class AuthService(UserManager<ApplicationUser> userManager, IJwtProvider 
             UserName = request.Email,
             PhoneNumber = request.Phone,
             FullName = request.FullName,
+            PreferredLang = request.PreferredLang,
+            Status = "Active"
         };
 
         var result = await _userManager.CreateAsync(user, request.Password);
@@ -130,13 +132,18 @@ public class AuthService(UserManager<ApplicationUser> userManager, IJwtProvider 
         }
 
         // assign buyer role
-        //await _userManager.AddToRoleAsync(user, AppRoles.Buyer);
+        await _userManager.AddToRoleAsync(user, DefaultRoles.Buyer);
 
         // create Buyer profile
         var buyer = new Buyer
         {
             UserId = user.Id,
             BusinessName = request.BusinessName,
+            BusinessType = request.BusinessType,
+            RatingAvg = request.RatingAvg,
+            TaxNumber = request.TaxNumber,
+            Longitude = request.Longitude,
+            Latitude = request.Latitude,
             Address = request.Address,
             RegionId = request.RegionId,
             CreatedAt = DateTime.UtcNow,

@@ -1,4 +1,4 @@
-﻿namespace Tawreed.BLL.Constants;
+﻿namespace Tawreed.DAL.Consts;
 
 public static class RegexPatterns
 {

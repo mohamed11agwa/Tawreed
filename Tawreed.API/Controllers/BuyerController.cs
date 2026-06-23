@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Tawreed.BLL.Constants;
 using Tawreed.BLL.Dtos.Buyer;
 using Tawreed.BLL.Services.BuyerService;
 
@@ -29,7 +28,6 @@ public class BuyerController : ControllerBase
         return Ok(res);
     }
 
-    [Authorize (Roles = AppRoles.Admin)]
     [HttpGet("{userId:guid}")]
     public async Task<IActionResult> GetBuyerById([FromRoute] Guid userId)
     {

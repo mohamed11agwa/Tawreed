@@ -6,7 +6,7 @@ using Tawreed.DAL.Models;
 
 namespace Tawreed.DAL.Data;
 
-public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>
+public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>
 {
     public DbSet<Buyer> Buyers { get; set; }
     public DbSet<Supplier> Suppliers { get; set; }

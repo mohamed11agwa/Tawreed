@@ -9,7 +9,6 @@ public sealed class ApplicationUser : IdentityUser<Guid>
     [MaxLength(200)]
     public string FullName { get; set; } = string.Empty;
 
-    public string Role { get; set; } = null!;
     public string Status { get; set; } = null!;
     public DateTime? LastLoginAt { get; set; }
     [Required]

@@ -1,10 +1,9 @@
-using Tawreed.API.Extensions;
 using Tawreed.API.Registration;
 namespace Tawreed.API
 {
     public class Program
     {
-        public  static async Task Main(string[] args)
+        public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
             
@@ -22,7 +21,6 @@ namespace Tawreed.API
 
 
             var app = builder.Build();
-            await app.SeedRolesAsync();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

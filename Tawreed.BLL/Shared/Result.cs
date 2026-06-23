@@ -1,6 +1,4 @@
-﻿using static System.Runtime.InteropServices.JavaScript.JSType;
-
-namespace Tawreed.BLL.Shared;
+﻿namespace Tawreed.BLL.Shared;
 
 public class Result
 {

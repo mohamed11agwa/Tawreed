@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 using Tawreed.BLL.Contracts.Authentication;
 using Tawreed.BLL.Services.AuthService;
 
@@ -50,12 +49,13 @@ namespace Tawreed.API.Controllers
         [HttpPost("register/buyer")]
         public async Task<IActionResult> RegisterBuyer([FromBody] RegisterBuyerRequest request, CancellationToken cancellationToken)
         {
-            var response = await _authService.RegisterBuyerAsync(request, cancellationToken);
+            var result = await _authService.RegisterBuyerAsync(request, cancellationToken);
+            return result.IsSuccess ? Ok(result.Value) :
+                         Problem(statusCode: StatusCodes.Status409Conflict, title: result.Error.Code, detail: result.Error.Description);
+            //if (response is null)
+            //    return Conflict("Email is already registered.");
 
-            if (response is null)
-                return Conflict("Email is already registered.");
-
-            return CreatedAtAction(nameof(Login), response);
+            //return CreatedAtAction(nameof(Login), response);
         }
 
 

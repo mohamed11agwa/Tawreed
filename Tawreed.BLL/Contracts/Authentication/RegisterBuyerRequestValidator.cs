@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using Tawreed.BLL.Constants;
+using Tawreed.DAL.Consts;
 
 namespace Tawreed.BLL.Contracts.Authentication;
 
@@ -24,6 +24,11 @@ public class RegisterBuyerRequestValidator : AbstractValidator<RegisterBuyerRequ
             .Matches(RegexPatterns.Password)
             .WithMessage("Password should be at least 8 characters and contain Uppercase, Lowercase, Number & Special character.");
 
+        RuleFor(x => x.PreferredLang)
+            .NotEmpty()
+            .Must(lang => lang == "ar" || lang == "en")
+            .WithMessage("PreferredLang must be either 'ar' or 'en'");
+
         RuleFor(x => x.BusinessName)
             .NotEmpty()
             .MaximumLength(200);
@@ -32,11 +37,30 @@ public class RegisterBuyerRequestValidator : AbstractValidator<RegisterBuyerRequ
             .NotEmpty()
             .MaximumLength(50);
 
-        RuleFor(x => x.RegionId)
-            .NotEqual(Guid.Empty).WithMessage("Region is required.");
+        RuleFor(x => x.TaxNumber)
+        .MaximumLength(50);
+
+        RuleFor(x => x.RatingAvg)
+           .Must(BeValidRating)
+           .WithMessage("Rating must be between 0.00 and 5.00");
 
         RuleFor(x => x.Address)
-            .NotEmpty()
             .MaximumLength(500);
+
+        RuleFor(x => x.Latitude)
+            .InclusiveBetween(-90, 90);
+
+        RuleFor(x => x.Longitude)
+            .InclusiveBetween(-180, 180);
+
+        RuleFor(x => x.RegionId)
+            .NotEmpty()
+            .WithMessage("Region is required.");
+    }
+
+
+    private bool BeValidRating(decimal rating)
+    {
+        return rating >= 0 && rating <= 5;
     }
 }
